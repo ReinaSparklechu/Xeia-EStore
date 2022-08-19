@@ -5,19 +5,20 @@
 <head>
     <meta charset="UTF-8">
     <title>StorePage</title>
-    <link rel="stylesheet" href="../static/storeStyle.css" type = "text/css">
+    <link rel="stylesheet" th:href="@{/storeStyle.css}" type = "text/css">
 </head>
 <body>
 <h1 th:text="${storeName}">defaultHolder</h1>
-<div th:each="item: ${inventoryList}">
-    <span th:text="${item.getKey().getName()}"></span>
-    <span th:text = "${item.getKey().getPrice()}"></span>
-    <span th:if = "${case} == 0" th:text = "${item.getKey().getEnchantable()}"></span>
-    <span th:if = "${case} == 0" th:text="${item.getKey().getEnchantment()}"></span>
-    <span th:if = "${case} == 0" th:text="${item.getKey().getItemLvl()}"></span>
-    <span th:if = "${case} == 1" th:text = "${item.getKey().getEffect()}"></span>
-    <span th:if = "${case} == 1" th:text="${item.getKey().getQuality()}"></span>
-    <span th:if = "${case} == 1" th:text="${item.getValue().toString()}"></span>
+<div th:each="item: ${inventory.keySet().toArray()}" class="itemCard">
+    <span th:text="${item.getName()}"></span>
+    <span th:text = "${item.getPrice()}"></span>
+
+    <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Equipment'" th:text = "${item.isEnchantable()}"></span>
+    <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Equipment'" th:text="${item.getEnchantment()}"></span>
+    <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Equipment'" th:text="${item.getItemLvl()}"></span>
+    <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Consumable'" th:text = "${item.getEffect()}"></span>
+    <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Consumable'" th:text="${item.getQuality()}"></span>
+    <span th:text = "${inventory.get(item)}"></span>
 </div>
 
 </body>

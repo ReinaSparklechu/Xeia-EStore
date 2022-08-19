@@ -2,6 +2,7 @@ package Xeia.Web;
 
 import Xeia.Data.ItemRepository;
 import Xeia.Data.JdbcItemRepository;
+import Xeia.Items.Equipment;
 import Xeia.Items.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,14 +22,32 @@ public class StoreController {
     @Autowired
     StoreController(ItemRepository itemRepository){
         this.itemRepository = itemRepository;
+        Equipment equipment = new Equipment();
     }
-
+    @GetMapping
+    public String store() {
+        return "store";
+    }
     @GetMapping("/smithy")
     public String smithy(Model model){
         Map<Item, Integer> inventory = itemRepository.loadInventory("smithy");
         System.out.println(inventory);
         model.addAttribute("inventory", inventory);
-        return "store";
+        return "storePage";
+    }
+
+    @GetMapping("/apothecary")
+    public String apothecary(Model model) {
+        Map<Item, Integer> inventory = itemRepository.loadInventory("apothecary");
+        model.addAttribute("inventory", inventory);
+        return "storePage";
+    }
+    @GetMapping("/tailor")
+    public String tailor(Model model) {
+        Map<Item, Integer> inventory = itemRepository.loadInventory("tailor");
+        model.addAttribute("inventory", inventory);
+        return "storePage";
+
     }
 
 }
