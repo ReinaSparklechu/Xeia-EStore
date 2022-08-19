@@ -5,18 +5,21 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @RequiredArgsConstructor
-public abstract class Item {
+public class Item {
     private String name;
     private int price;
 
-    public boolean equals(Item i) {
-        if(i.getName() == this.name && i.getPrice() == this.price) {
+    @Override
+    public boolean equals(Object i) {
+        if(i == this) {
             return true;
-        }else{
+        }
+        if(!(i instanceof Item)) {
             return false;
         }
+        Item j = (Item) i;
+        return (j.name == this.name);
     }
 
 }

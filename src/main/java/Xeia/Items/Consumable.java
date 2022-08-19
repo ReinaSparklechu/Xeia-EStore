@@ -8,11 +8,17 @@ import lombok.RequiredArgsConstructor;
 @Data
 public class Consumable extends Item{
     private int quality;
-    String effect;
+    private String effect;
 
     public Consumable(String name, int price, int quality, String effect) {
-        super(name,price);
+        super.setName(name);
+        super.setPrice(price);
         this.quality = quality;
         this.effect = effect;
+    }
+    public boolean equals(Consumable c) {
+        if(c.getName() == this.getName()) {
+            return true;
+        } else return false;
     }
 }

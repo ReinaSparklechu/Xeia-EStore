@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -40,21 +41,29 @@ public class JdbcItemRepository implements ItemRepository {
 
         List<Item> items;
         List <Integer> quantity;
-        Map<Item, Integer> inventory = new HashMap<>();
+        Map<Item, Integer> inventory = new HashMap<>(10);
         quantity = jdbc.query("select quantity from Item_Store where Store_Name = \'" + store + "\'", this::mapRowToInteger);
         if(store.toLowerCase() == "apothecary") {
             items = jdbc.query("select i.name, i.price, i.quality, i.effect, i.isConsumable, i.isEquipment from Items i, Item_Store s  where s.Store_Name = \'" + store +"\' and i.name = s.Item_Name" , this::mapRowToItem);
         } else {
             items = jdbc.query("select i.name, i.price, i.itemLvl, i.isEnchantable, i.enchantment , i.isConsumable, i.isEquipment from Items i , Item_Store s where s.Store_Name = \'" + store +"\' and i.name = s.Item_Name" , this::mapRowToItem);
         }
+        System.out.println(items);
+        System.out.println(items.size());
+        System.out.println(quantity);
+        System.out.println(quantity.size());
 
         if(items.size() == quantity.size()) {
-            for(int i = 0; i< items.size(); i++) {
-                inventory.put(items.get(i), quantity.get(i));
+            int length = items.size();
+            Iterator<Item> items1 = items.iterator();
+            Iterator<Integer> integerIterator = quantity.iterator();
+            for(int i = 0; i<length; i++) {
+                inventory.put(items1.next(),integerIterator.next());
             }
         } else {
             throw new RuntimeException("Item quantity list mismatch: ");
         }
+        System.out.println(inventory);
         return inventory;
     }
 

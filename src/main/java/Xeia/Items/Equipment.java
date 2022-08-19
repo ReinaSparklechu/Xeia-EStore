@@ -25,4 +25,9 @@ public class Equipment extends Item{
                 + ", isEnchantable=" + this.isEnchantable
                 + ", Enchantment=" + this.enchantment;
     }
+    public boolean equals(Equipment e) {
+        if(e.getName() == this.getName()) {
+            return true;
+        } else return false;
+    }
 }
