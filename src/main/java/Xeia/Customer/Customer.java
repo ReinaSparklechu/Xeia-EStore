@@ -15,9 +15,14 @@ import java.util.Map;
 public class Customer {
     @NonNull
     private String username;
+    @NonNull
     private String password;
     private Map<Item, Integer> inventory;
     private Map<Item, Integer> shoppingCart;
-    @NonNull
     private long userId;
+
+    public Customer(String userName, long userId) {
+        this.username = userName;
+        this.userId = userId;
+    }
 }

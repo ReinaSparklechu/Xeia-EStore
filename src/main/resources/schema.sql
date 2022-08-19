@@ -25,9 +25,10 @@ create table if not exists Item_Store
 alter table Item_Store add foreign key (Item_Name) references Items(name);
 
 create table if not exists Customer(
+    userId identity ,
     username varchar(32) not null,
-    passwordHash varchar2(16) not null ,
-    userId long primary key
+    passwordHash varchar2(32) not null
+
 );
 create table if not exists Customer_Cart
 (
