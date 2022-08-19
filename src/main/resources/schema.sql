@@ -23,3 +23,24 @@ create table if not exists Item_Store
     quantity int not null
 );
 alter table Item_Store add foreign key (Item_Name) references Items(name);
+
+create table if not exists Customer(
+    username varchar(32) not null,
+    passwordHash varchar2(16) not null ,
+    userId long primary key
+);
+create table if not exists Customer_Cart
+(
+    userId long not null,
+    Item_name varchar(32) not null,
+    Quantity int not null
+);
+alter table Customer_Cart add foreign key (userId) references Customer(userId);
+alter table Customer_Cart add foreign key (Item_name) references Items(name);
+create table if not exists Customer_Inventory (
+    userId long not null,
+    Item_name varchar(32) not null,
+    Quantity int not null
+);
+alter table Customer_Inventory add foreign key (userId) references Customer(userId);
+alter table Customer_Inventory add foreign key (Item_name) references Items(name);

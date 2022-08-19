@@ -48,10 +48,7 @@ public class JdbcItemRepository implements ItemRepository {
         } else {
             items = jdbc.query("select i.name, i.price, i.itemLvl, i.isEnchantable, i.enchantment , i.isConsumable, i.isEquipment from Items i , Item_Store s where s.Store_Name = \'" + store +"\' and i.name = s.Item_Name" , this::mapRowToItem);
         }
-        System.out.println(items);
-        System.out.println(items.size());
-        System.out.println(quantity);
-        System.out.println(quantity.size());
+
 
         if(items.size() == quantity.size()) {
             int length = items.size();

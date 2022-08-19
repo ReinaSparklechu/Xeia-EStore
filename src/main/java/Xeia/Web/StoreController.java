@@ -31,8 +31,8 @@ public class StoreController {
     @GetMapping("/smithy")
     public String smithy(Model model){
         Map<Item, Integer> inventory = itemRepository.loadInventory("smithy");
-        System.out.println(inventory);
         model.addAttribute("inventory", inventory);
+        model.addAttribute("storeName", "Smithy");
         return "storePage";
     }
 
@@ -40,12 +40,14 @@ public class StoreController {
     public String apothecary(Model model) {
         Map<Item, Integer> inventory = itemRepository.loadInventory("apothecary");
         model.addAttribute("inventory", inventory);
+        model.addAttribute("storeName", "Apothecary");
         return "storePage";
     }
     @GetMapping("/tailor")
     public String tailor(Model model) {
         Map<Item, Integer> inventory = itemRepository.loadInventory("tailor");
         model.addAttribute("inventory", inventory);
+        model.addAttribute("storeName", "Tailor");
         return "storePage";
 
     }
