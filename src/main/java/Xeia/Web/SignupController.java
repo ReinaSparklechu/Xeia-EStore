@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
 
 @Controller
@@ -19,23 +20,24 @@ public class SignupController {
     @Autowired
     CustomerRepository customerRepo;
     @GetMapping
-    public String signup(Model model, @ModelAttribute("Customer")Customer customer) throws NoSuchAlgorithmException {
-        Customer tests = new Customer("CustomerName", "RandomCustomer");
-        customerRepo.signUpCustomer(tests);
+    public String signup(Model model, @ModelAttribute("customer")Customer customer) throws NoSuchAlgorithmException {
         model.addAttribute("customer" , customer);
         return "signup";
     }
     @PostMapping
-    public String completeSignup(Model model, @ModelAttribute("Customer") Customer customer, Errors errors) {
+    public String completeSignup(Model model, @Valid @ModelAttribute("customer") Customer customer, Errors errors) {
         if(errors.hasErrors()) {
-            return "/signup";
+            System.out.println("has errirs");
+            model.addAttribute("Customer", customer);
+
+            return "signup";
         } else {
             try{
                 customerRepo.signUpCustomer(customer);
                 return "redirect:/";
             } catch (Exception e) {
                 System.out.println(e);
-                return" signup";
+                return"signup";
             }
 
         }

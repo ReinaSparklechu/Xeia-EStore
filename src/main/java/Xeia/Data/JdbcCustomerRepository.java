@@ -52,7 +52,6 @@ public class JdbcCustomerRepository implements CustomerRepository {
                         , passwordHash));
         KeyHolder kh = new GeneratedKeyHolder();
         jdbc.update(psc,kh);
-        System.out.println(kh.getKey().longValue());
         jdbc.update("update Customer set userId = " + kh.getKey().longValue() + " where username = \'" + newCustomer.getUsername() + "\' and userId = null");
         newCustomer.setUserId(kh.getKey().longValue());
         System.out.println("Signup complete for: " + newCustomer);

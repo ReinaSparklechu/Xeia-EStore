@@ -7,6 +7,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.Map;
 
 @Data
@@ -14,8 +16,12 @@ import java.util.Map;
 @NoArgsConstructor
 public class Customer {
     @NonNull
+    @NotBlank
+    @Pattern(regexp = "^[0-9a-zA-Z_]{9,32}", message = "Username must be at least 9 characters long, max of 32 characters")
     private String username;
     @NonNull
+    @NotBlank
+    @Pattern(regexp = "^[0-9a-zA-Z_]{9,32}", message ="password must be at least 9 characters long, max of 32 characters" )
     private String password;
     private Map<Item, Integer> inventory;
     private Map<Item, Integer> shoppingCart;
