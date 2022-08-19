@@ -1,0 +1,18 @@
+* {
+    color: black;
+    background-color: antiquewhite;
+    font-family: "Comic Sans MS";
+
+
+}
+div{
+    background-color: beige;
+    padding: 1vh;
+    outline-color: black;
+    outline-style: dashed;
+    outline-width: medium;
+    margin: 1vh;
+}
+span {
+    background-color: beige;
+}

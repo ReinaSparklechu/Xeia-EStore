@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns = "http://www.w3.org/1999/xhtml"
+      xmlns:th = "http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>StorePage</title>
+    <link rel="stylesheet" href="../static/storeStyle.css" type = "text/css">
+</head>
+<body>
+<h1 th:text="${storeName}">defaultHolder</h1>
+<div th:each="item: ${inventoryList}">
+    <span th:text="${item.getKey().getName()}"></span>
+    <span th:text = "${item.getKey().getPrice()}"></span>
+    <span th:if = "${case} == 0" th:text = "${item.getKey().getEnchantable()}"></span>
+    <span th:if = "${case} == 0" th:text="${item.getKey().getEnchantment()}"></span>
+    <span th:if = "${case} == 0" th:text="${item.getKey().getItemLvl()}"></span>
+    <span th:if = "${case} == 1" th:text = "${item.getKey().getEffect()}"></span>
+    <span th:if = "${case} == 1" th:text="${item.getKey().getQuality()}"></span>
+    <span th:if = "${case} == 1" th:text="${item.getValue().toString()}"></span>
+</div>
+
+</body>
+</html>
