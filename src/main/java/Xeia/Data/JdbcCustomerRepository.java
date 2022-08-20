@@ -8,6 +8,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
@@ -37,21 +38,32 @@ public class JdbcCustomerRepository implements CustomerRepository {
     @Autowired
     public JdbcCustomerRepository(JdbcTemplate jdbc) throws IOException, ExecutionException, InterruptedException {
         this.jdbc = jdbc;
-        FirebaseApp.initializeApp(options);
-        db = FirestoreClient.getFirestore();
-        List< QueryDocumentSnapshot> documents = db.collection("Reddit").get().get().getDocuments();
 
     }
 
-    // TODO: 19/8/2022 replace the repositories with firebase 
+    //if customer is not authenticated it will return a null object
     @Override
     public Customer loginCustomer(String name, String passHash) {
-        return null;
+        try{
+            String auth = jdbc.queryForObject("Select passwordHash from Customer where username = \'" + name +"\'", String.class);
+            System.out.println("queried");
+            System.out.println("queried hash: " + auth + "\nGiven hash: " + passHash);
+            if(auth.equals(passHash)) {
+                System.out.println("authenticating");
+                Customer authenticated = jdbc.queryForObject("select username, userid from Customer where username = ?" , this::mapRowToCustomer, name);
+                System.out.println("queried customer: " + authenticated);
+                return authenticated;
+
+            } else {
+                return null;
+            }
+        } catch (EmptyResultDataAccessException e) {
+            System.out.println("Account was not found");
+            return null;
+        }
+
     }
-    FileInputStream serviceAccount = new FileInputStream("src/main/resources/reina-s-base-firebase-adminsdk-y5kk5-e559e59132.json");
-    FirebaseOptions options = new FirebaseOptions.Builder()
-            .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-            .build();
+
 
 
     private String convertToHex(final byte[] messageDigest) {

@@ -27,7 +27,7 @@ public class SignupController {
     @PostMapping
     public String completeSignup(Model model, @Valid @ModelAttribute("customer") Customer customer, Errors errors) {
         if(errors.hasErrors()) {
-            System.out.println("has errirs");
+            System.out.println("has errors");
             model.addAttribute("Customer", customer);
 
             return "signup";
