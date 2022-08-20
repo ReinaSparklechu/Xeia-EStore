@@ -19,6 +19,7 @@ import java.util.Map;
 @NoArgsConstructor
 
 public class Customer {
+    // TODO: 20/8/2022 insert funds and implement into db 
     @NonNull
     @NotBlank
     @Pattern(regexp = "^[0-9a-zA-Z_]{9,32}", message = "Username must be at least 9 characters long, max of 32 characters")

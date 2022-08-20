@@ -19,6 +19,7 @@ import java.util.Map;
 @RequestMapping("/store")
 @SessionAttributes("customer")
 public class StoreController {
+    // TODO: 20/8/2022 sort store page listings so that items should be displayed by alphabetical order 
 
     ItemRepository itemRepository;
 
@@ -59,11 +60,13 @@ public class StoreController {
     }
     @PostMapping("/checkout")
     public String checkout(Model model, @ModelAttribute("customer")Customer customer){
+        // TODO: 20/8/2022 implement checkout process 
         System.out.println(customer.getShoppingCart());
         return "redirect:/";
     }
     @PostMapping
     public String addtoCart(Model model, @ModelAttribute("customer")Customer customer) {
+        // TODO: 20/8/2022 allow for users to select copies of the same items to add to cart 
         System.out.println(customer.getLastVisited());
         Map<Item, Integer> inventory = itemRepository.loadInventory(customer.getLastVisited());
         customer.consolidateCart(inventory);
