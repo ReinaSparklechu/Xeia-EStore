@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
+
 public class Equipment extends Item{
     private int itemLvl;
     private boolean isEnchantable;

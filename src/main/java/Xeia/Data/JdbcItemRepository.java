@@ -60,7 +60,6 @@ public class JdbcItemRepository implements ItemRepository {
         } else {
             throw new RuntimeException("Item quantity list mismatch: ");
         }
-        System.out.println(inventory);
         return inventory;
     }
 

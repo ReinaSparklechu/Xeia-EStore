@@ -17,6 +17,7 @@ import java.util.Map;
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
+
 public class Customer {
     @NonNull
     @NotBlank
@@ -54,10 +55,14 @@ public class Customer {
     }
     //method to add item into cart, if item exists, increment by 1 else, enter new entry.
     private void addToCart(Item i) {
-
-        if(shoppingCart.containsKey(i)) {
-            System.out.println("match found");
-            shoppingCart.replace(i,shoppingCart.get(i)+1);
+        List<Item> keylist = shoppingCart.keySet().stream().toList();
+        if(keylist.contains(i)) {
+            shoppingCart.forEach((item, integer) -> {
+                if(item.getName().equals(i.getName())){
+                    shoppingCart.replace(item, integer +1);
+                }
+            });
+            System.out.println("replaced");
         } else {
             shoppingCart.put(i,1);
         }
