@@ -25,11 +25,14 @@ public class Equipment extends Item{
                 + ", Price=" + this.getPrice()
                 + ", itemLvl=" + this.itemLvl
                 + ", isEnchantable=" + this.isEnchantable
-                + ", Enchantment=" + this.enchantment;
+                + ", Enchantment=" + this.enchantment +')';
     }
     public boolean equals(Equipment e) {
-        if(e.getName() == this.getName()) {
+        System.out.println("e comparitor used");
+        if(e.getName().equals(this.getName())) {
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 }

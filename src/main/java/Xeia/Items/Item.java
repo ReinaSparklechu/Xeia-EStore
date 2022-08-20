@@ -12,14 +12,16 @@ public class Item {
 
     @Override
     public boolean equals(Object i) {
+        System.out.println("base comparitor used");
         if(i == this) {
             return true;
         }
-        if(!(i instanceof Item)) {
+        if(!(i instanceof Item||i instanceof Equipment||i instanceof Consumable)) {
             return false;
         }
         Item j = (Item) i;
-        return (j.name == this.name);
+        return (j.getName().equalsIgnoreCase(this.name));
     }
+
 
 }

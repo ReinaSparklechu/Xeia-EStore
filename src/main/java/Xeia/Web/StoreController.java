@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -26,27 +28,30 @@ public class StoreController {
         Equipment equipment = new Equipment();
     }
     @GetMapping
-    public String store() {
+    public String store(@ModelAttribute("customer") Customer customer) {
         return "store";
     }
     @GetMapping("/smithy")
-    public String smithy(Model model){
+    public String smithy(Model model, @ModelAttribute("customer")Customer customer){
         Map<Item, Integer> inventory = itemRepository.loadInventory("smithy");
+        customer.setLastVisited("smithy");
         model.addAttribute("inventory", inventory);
         model.addAttribute("storeName", "Smithy");
         return "storePage";
     }
 
     @GetMapping("/apothecary")
-    public String apothecary(Model model) {
+    public String apothecary(Model model,  @ModelAttribute("customer")Customer customer) {
         Map<Item, Integer> inventory = itemRepository.loadInventory("apothecary");
+        customer.setLastVisited("apothecary");
         model.addAttribute("inventory", inventory);
         model.addAttribute("storeName", "Apothecary");
         return "storePage";
     }
     @GetMapping("/tailor")
-    public String tailor(Model model) {
+    public String tailor(Model model,  @ModelAttribute("customer")Customer customer) {
         Map<Item, Integer> inventory = itemRepository.loadInventory("tailor");
+        customer.setLastVisited("tailor");
         model.addAttribute("inventory", inventory);
         model.addAttribute("storeName", "Tailor");
         return "storePage";
@@ -59,7 +64,11 @@ public class StoreController {
     }
     @PostMapping
     public String addtoCart(Model model, @ModelAttribute("customer")Customer customer) {
+        System.out.println(customer.getLastVisited());
+        Map<Item, Integer> inventory = itemRepository.loadInventory(customer.getLastVisited());
+        customer.consolidateCart(inventory);
         System.out.println(customer.getShoppingCart());
+        model.addAttribute("customer", customer);
         return "redirect:/store";
     }
 

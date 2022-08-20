@@ -23,7 +23,8 @@
 </div>
 <h1 th:text="${storeName}">defaultHolder</h1>
 <form method="post" th:action = "@{/store}">
-<div th:each="item: ${inventory.keySet().toArray()}" class="itemCard">
+    <input type="hidden" th:object="${customer}"  th:field="*{lastVisited}" th:value="${storeName}">
+<div th:each="item: ${#lists.toList(inventory.keySet())}" class="itemCard">
     <span th:text="${item.getName()}"></span>
     <span th:text = "${item.getPrice()}"></span>
 
@@ -33,8 +34,9 @@
     <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Consumable'" th:text = "${item.getEffect()}"></span>
     <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Consumable'" th:text="${item.getQuality()}"></span>
     <span th:text = "${inventory.get(item)}">quantity</span>
-    <input type="checkbox" th:object="${customer}"  name = "shoppingCart" th:value="${item}">
+    <input type="checkbox" th:object="${customer}" th:field="*{cartBuffer}"   th:value="${item.name} " >
 </div>
+
     <button type="submit">add to cart</button>
 </form>
 

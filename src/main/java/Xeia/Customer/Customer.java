@@ -27,15 +27,39 @@ public class Customer {
     @Pattern(regexp = "^[0-9a-zA-Z_]{9,32}", message ="password must be at least 9 characters long, max of 32 characters" )
     private String password;
     private Map<Item, Integer> inventory = new HashMap<>();
-    private List<Item> shoppingCart = new ArrayList<>();
+    private Map<Item, Integer> shoppingCart = new HashMap<>();
+    private  List<String> cartBuffer = new ArrayList<>();
     private long userId;
+
+    private String lastVisited;
 
     public Customer(String userName, long userId) {
         this.username = userName;
         this.userId = userId;
     }
 
-    public void addToCart(Item i) {
+    public void consolidateCart(Map<Item,Integer> inventory) {
+        List<Item> itemList = new ArrayList<>();
+        Item[] keyset = inventory.keySet().toArray(new Item[0]);
+        System.out.println("Buffer contains" + cartBuffer);
+        for(String s: cartBuffer) {
+            for(Item i : keyset) {
+                if(i.getName().equals(s)){
+                    System.out.println("Adding to cart item:" + i);
+                    addToCart(i);
+                }
+            }
+        }
+        cartBuffer.removeAll(cartBuffer);
+    }
+    //method to add item into cart, if item exists, increment by 1 else, enter new entry.
+    private void addToCart(Item i) {
 
+        if(shoppingCart.containsKey(i)) {
+            System.out.println("match found");
+            shoppingCart.replace(i,shoppingCart.get(i)+1);
+        } else {
+            shoppingCart.put(i,1);
+        }
     }
 }

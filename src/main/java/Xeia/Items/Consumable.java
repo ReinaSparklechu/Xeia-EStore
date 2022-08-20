@@ -18,8 +18,11 @@ public class Consumable extends Item{
         this.effect = effect;
     }
     public boolean equals(Consumable c) {
-        if(c.getName() == this.getName()) {
+        System.out.println("c comparitor used");
+        if(c.getName().equals(this.getName())) {
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 }

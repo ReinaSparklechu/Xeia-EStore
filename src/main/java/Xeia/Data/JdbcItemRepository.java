@@ -43,7 +43,7 @@ public class JdbcItemRepository implements ItemRepository {
         List <Integer> quantity;
         Map<Item, Integer> inventory = new HashMap<>(10);
         quantity = jdbc.query("select quantity from Item_Store where Store_Name = \'" + store + "\'", this::mapRowToInteger);
-        if(store.toLowerCase() == "apothecary") {
+        if(store.equalsIgnoreCase("apothecary")) {
             items = jdbc.query("select i.name, i.price, i.quality, i.effect, i.isConsumable, i.isEquipment from Items i, Item_Store s  where s.Store_Name = \'" + store +"\' and i.name = s.Item_Name" , this::mapRowToItem);
         } else {
             items = jdbc.query("select i.name, i.price, i.itemLvl, i.isEnchantable, i.enchantment , i.isConsumable, i.isEquipment from Items i , Item_Store s where s.Store_Name = \'" + store +"\' and i.name = s.Item_Name" , this::mapRowToItem);
