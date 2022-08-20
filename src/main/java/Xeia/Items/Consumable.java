@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Data
+@AllArgsConstructor
 public class Consumable extends Item{
     private int quality;
     private String effect;

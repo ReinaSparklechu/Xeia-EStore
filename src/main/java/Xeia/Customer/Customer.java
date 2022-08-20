@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -23,12 +26,16 @@ public class Customer {
     @NotBlank
     @Pattern(regexp = "^[0-9a-zA-Z_]{9,32}", message ="password must be at least 9 characters long, max of 32 characters" )
     private String password;
-    private Map<Item, Integer> inventory;
-    private Map<Item, Integer> shoppingCart;
+    private Map<Item, Integer> inventory = new HashMap<>();
+    private List<Item> shoppingCart = new ArrayList<>();
     private long userId;
 
     public Customer(String userName, long userId) {
         this.username = userName;
         this.userId = userId;
+    }
+
+    public void addToCart(Item i) {
+
     }
 }

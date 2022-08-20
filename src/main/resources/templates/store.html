@@ -9,6 +9,19 @@
 <body>
 Welcome to the store
 <div>
+    <div th:object="${customer}" class = "CustTracker">
+        <label for="username">Username: </label>
+        <div th:text=" *{username}" id = "username"></div>
+        <br/>
+
+        <label for="inventory Size">Inventory size:</label>
+        <div th:text="*{getInventory().keySet().size()}" id = "inventory size"></div>
+        <br/>
+
+        <label for="Cart size">Items in cart: </label>
+        <div th:text="*{getShoppingCart().size()}" id = "Cart size"></div>
+        <br>
+    </div>
     <div>
         <a href="/store/smithy">Smith</a>
     </div>

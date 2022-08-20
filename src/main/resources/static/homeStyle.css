@@ -4,4 +4,17 @@
     font-family: "Comic Sans MS";
 
 
+
+}
+div {
+    flex-direction: column;
+    align-items: stretch;
+}
+.CustTracker {
+    border-radius: 5px;
+    border: brown;
+    border-width: 2px;
+    outline-style: dashed;
+    align-self: flex-end;
+    alignment: right;
 }

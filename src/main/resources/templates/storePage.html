@@ -8,7 +8,21 @@
     <link rel="stylesheet" th:href="@{/storeStyle.css}" type = "text/css">
 </head>
 <body>
+<div th:object="${customer}" class = "CustTracker">
+    <label for="username">Username: </label>
+    <div th:text=" *{username}" id = "username"></div>
+    <br/>
+
+    <label for="inventory Size">Inventory size:</label>
+    <div th:text="*{getInventory().keySet().size()}" id = "inventory size"></div>
+    <br/>
+
+    <label for="Cart size">Items in cart: </label>
+    <div th:text="*{getShoppingCart().size()}" id = "Cart size"></div>
+    <br>
+</div>
 <h1 th:text="${storeName}">defaultHolder</h1>
+<form method="post" th:action = "@{/store}">
 <div th:each="item: ${inventory.keySet().toArray()}" class="itemCard">
     <span th:text="${item.getName()}"></span>
     <span th:text = "${item.getPrice()}"></span>
@@ -18,8 +32,11 @@
     <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Equipment'" th:text="${item.getItemLvl()}"></span>
     <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Consumable'" th:text = "${item.getEffect()}"></span>
     <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Consumable'" th:text="${item.getQuality()}"></span>
-    <span th:text = "${inventory.get(item)}"></span>
+    <span th:text = "${inventory.get(item)}">quantity</span>
+    <input type="checkbox" th:object="${customer}"  name = "shoppingCart" th:value="${item}">
 </div>
+    <button type="submit">add to cart</button>
+</form>
 
 </body>
 </html>
