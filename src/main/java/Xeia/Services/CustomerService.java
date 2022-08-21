@@ -17,7 +17,7 @@ public class CustomerService {
     public CustomerService() {
         System.out.println("created service bean");
     }
-    //todo
+    //todo maybe use a service in the controller???
     public void checkoutCart(Customer c) {
         Map<Item, Integer> buffer = new HashMap<>();
         c.getShoppingCart().forEach(((item, integer) -> {
@@ -25,6 +25,13 @@ public class CustomerService {
             //insert into database table Customer Inventory
             //update store_item
         }));
+
+    }
+
+    public void updateCustomer(Customer c) {
+        custRepo.updateCart(c);
+        custRepo.updateInventory(c);
+        custRepo.updateFund(c);
 
     }
 }

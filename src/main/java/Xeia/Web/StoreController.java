@@ -2,19 +2,16 @@ package Xeia.Web;
 
 import Xeia.Customer.Customer;
 import Xeia.Data.ItemRepository;
-import Xeia.Data.JdbcItemRepository;
 import Xeia.Items.Equipment;
 import Xeia.Items.Item;
 import Xeia.Services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Controller
 @RequestMapping("/store")
@@ -65,8 +62,35 @@ public class StoreController {
     }
     @PostMapping("/checkout")
     public String checkout(Model model, @ModelAttribute("customer")Customer customer){
+        //put items from cart into inventory
+        Map<Item, Integer> cartBuffer = customer.getShoppingCart();
+        Map<Item, Integer> invBuffer = customer.getInventory();
+        AtomicInteger totalCost = new AtomicInteger();
+        //iterate through cart
+        cartBuffer.forEach((cartItem, cartQuantity) -> {
+            //add to cost
+            totalCost.set(cartItem.getPrice() * cartQuantity.intValue());
+            //iterate through inventory
+            invBuffer.forEach((invItem, invQuantity) -> {
+                //if item is found in inventory, increment by quantity
+                if(invItem.equals(cartItem)) {
+                    invQuantity+= cartQuantity;
+                } else {
+                    //insert new pair into inventory
+                    invBuffer.put(cartItem,cartQuantity);
+
+                }
+            });
+        });
+        //deduct funds
+        int cost = totalCost.get();
+        System.out.println("Total cost is: " + cost);
+        customer.setFunds(customer.getFunds() - cost);
+        //update db
+        customerService.updateCustomer(customer);
         // TODO: 20/8/2022 implement checkout process 
         System.out.println(customer.getShoppingCart());
+        System.out.println(customer.getInventory());
         return "redirect:/";
     }
     @PostMapping

@@ -51,4 +51,4 @@ insert into Item_Store(store_name, item_name, quantity) values ('smithy', 'Gaunt
 insert into Item_Store(store_name, item_name, quantity) values ('smithy', 'Sword' , 5 );
 insert into Item_Store(store_name, item_name, quantity) values ('smithy', 'Axe' , 5 );
 insert into Item_Store(store_name, item_name, quantity) values ('smithy', 'Dagger' , 5 );
-insert into Customer(username, passwordhash) values('username1234' , 'bdc87b9c894da5168059e00ebffb9077');
+insert into Customer(username, passwordhash, funds) values('username1234' , 'bdc87b9c894da5168059e00ebffb9077', 1000);

@@ -19,7 +19,6 @@ import java.util.Map;
 @NoArgsConstructor
 
 public class Customer {
-    // TODO: 20/8/2022 insert funds and implement into db 
     @NonNull
     @NotBlank
     @Pattern(regexp = "^[0-9a-zA-Z_]{9,32}", message = "Username must be at least 9 characters long, max of 32 characters")
@@ -34,10 +33,12 @@ public class Customer {
     private long userId;
 
     private String lastVisited;
+    private int funds;
 
-    public Customer(String userName, long userId) {
+    public Customer(String userName, long userId, int funds) {
         this.username = userName;
         this.userId = userId;
+        this.funds = funds;
     }
 
     public void consolidateCart(Map<Item,Integer> inventory) {

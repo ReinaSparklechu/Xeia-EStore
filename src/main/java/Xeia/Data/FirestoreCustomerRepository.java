@@ -39,4 +39,19 @@ public class FirestoreCustomerRepository implements CustomerRepository{
     public void signUpCustomer(Customer newCustomer) throws NoSuchAlgorithmException {
 
     }
+
+    @Override
+    public void updateCart(Customer c) {
+
+    }
+
+    @Override
+    public void updateInventory(Customer c) {
+
+    }
+
+    @Override
+    public void updateFund(Customer c) {
+
+    }
 }

@@ -1,6 +1,7 @@
 package Xeia.Data;
 
 import Xeia.Customer.Customer;
+import Xeia.Items.Item;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
@@ -27,14 +28,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 
 @Repository
 public class JdbcCustomerRepository implements CustomerRepository {
     private JdbcTemplate jdbc;
-    private Firestore db;
     @Autowired
     public JdbcCustomerRepository(JdbcTemplate jdbc) throws IOException, ExecutionException, InterruptedException {
         this.jdbc = jdbc;
@@ -50,7 +52,7 @@ public class JdbcCustomerRepository implements CustomerRepository {
             System.out.println("queried hash: " + auth + "\nGiven hash: " + passHash);
             if(auth.equals(passHash)) {
                 System.out.println("authenticating");
-                Customer authenticated = jdbc.queryForObject("select username, userid from Customer where username = ?" , this::mapRowToCustomer, name);
+                Customer authenticated = jdbc.queryForObject("select username, userid, funds from Customer where username = ?" , this::mapRowToCustomer, name);
                 System.out.println("queried customer: " + authenticated);
                 return authenticated;
 
@@ -94,15 +96,47 @@ public class JdbcCustomerRepository implements CustomerRepository {
         System.out.println("Signup complete for: " + newCustomer);
     }
     private Customer mapRowToCustomer(ResultSet rs, int rowNum)throws SQLException {
-        return new Customer(rs.getString("userName"), rs.getLong("userId"));
+        return new Customer(rs.getString("userName"), rs.getLong("userId"), rs.getInt("funds"));
     }
 
-    //todo
-    private void saveToCart(Customer customer) {
+    //todo get list of items in cart, if item in db but not in cart, remove those items
+    public void updateCart(Customer customer) {
+        PreparedStatementCreatorFactory pscf = new PreparedStatementCreatorFactory("insert into Customer_Cart(userId, Item_name, Quantity) values ( ?,?,? )", Types.BIGINT, Types.VARCHAR, Types.INTEGER);
+        //process shopping cart and update db
+        customer.getShoppingCart().forEach(((item, integer) -> {
+            PreparedStatementCreator psc = pscf.newPreparedStatementCreator(Arrays.asList(customer.getUserId(),item.getName(),integer.intValue()));
+            jdbc.update(psc);
+        }));
+
 
     }
-    //todo
-    private void saveToInventory(Customer customer){
+    private String mapInv(ResultSet rs, int rowNum) throws SQLException {
+        return rs.getString("Item_Name");
+    }
+    //todo use the list to remove any items potentially no longer in inventory
+    public void updateInventory(Customer customer){
+        List<String> dbInv;
+        PreparedStatementCreatorFactory pscfCheck = new PreparedStatementCreatorFactory("select Item_Name from Customer_Invetory where userId = ?", Types.BIGINT);
+        PreparedStatementCreatorFactory pscfInsert = new PreparedStatementCreatorFactory("insert into Customer_Inventory(userId, Item_name, Quantity) values ( ?,?,? )", Types.BIGINT, Types.VARCHAR, Types.INTEGER);
+        PreparedStatementCreatorFactory pscfUpdate = new PreparedStatementCreatorFactory("update Customer_Inventory(Quantity) values ( ? ) where userId = \'" + customer.getUserId() + "\' and Item_name = ?", Types.INTEGER, Types.VARCHAR);
+        //get list of current items in cust db inventory
+        PreparedStatementCreator psc= pscfCheck.newPreparedStatementCreator(Arrays.asList(customer.getUserId()));
+        dbInv = jdbc.query(psc,this::mapInv);
+
+        //go through customer inventory and update database accordingly.
+        customer.getInventory().forEach((item, integer) -> {
+            if(dbInv.contains(item.getName())) {
+                PreparedStatementCreator update = pscfUpdate.newPreparedStatementCreator(Arrays.asList(integer.intValue(),item.getName()));
+                jdbc.update(update);
+            } else {
+                PreparedStatementCreator insert = pscfInsert.newPreparedStatementCreator(Arrays.asList(customer.getUserId(),item.getName(),integer));
+                jdbc.update(insert);
+            }
+        });
+    }
+
+    @Override
+    public void updateFund(Customer c) {
 
     }
 }
