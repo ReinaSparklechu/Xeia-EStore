@@ -96,4 +96,13 @@ public class JdbcCustomerRepository implements CustomerRepository {
     private Customer mapRowToCustomer(ResultSet rs, int rowNum)throws SQLException {
         return new Customer(rs.getString("userName"), rs.getLong("userId"));
     }
+
+    //todo
+    private void saveToCart(Customer customer) {
+
+    }
+    //todo
+    private void saveToInventory(Customer customer){
+
+    }
 }

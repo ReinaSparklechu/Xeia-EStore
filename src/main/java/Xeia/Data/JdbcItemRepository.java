@@ -1,5 +1,6 @@
 package Xeia.Data;
 
+import Xeia.Customer.Customer;
 import Xeia.Items.Consumable;
 import Xeia.Items.Equipment;
 import Xeia.Items.Item;
@@ -61,6 +62,10 @@ public class JdbcItemRepository implements ItemRepository {
             throw new RuntimeException("Item quantity list mismatch: ");
         }
         return inventory;
+    }
+    //todo
+    public void makeSale(Customer customer) {
+
     }
 
 }

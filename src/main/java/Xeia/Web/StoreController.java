@@ -5,6 +5,7 @@ import Xeia.Data.ItemRepository;
 import Xeia.Data.JdbcItemRepository;
 import Xeia.Items.Equipment;
 import Xeia.Items.Item;
+import Xeia.Services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
@@ -23,11 +24,15 @@ public class StoreController {
 
     ItemRepository itemRepository;
 
+    CustomerService customerService;
+
     @Autowired
-    StoreController(ItemRepository itemRepository){
+    StoreController(ItemRepository itemRepository, CustomerService customerService){
         this.itemRepository = itemRepository;
+        this.customerService = customerService;
         Equipment equipment = new Equipment();
     }
+
     @GetMapping
     public String store(@ModelAttribute("customer") Customer customer) {
         return "store";
@@ -66,7 +71,6 @@ public class StoreController {
     }
     @PostMapping
     public String addtoCart(Model model, @ModelAttribute("customer")Customer customer) {
-        // TODO: 20/8/2022 allow for users to select copies of the same items to add to cart 
         System.out.println(customer.getLastVisited());
         Map<Item, Integer> inventory = itemRepository.loadInventory(customer.getLastVisited());
         customer.consolidateCart(inventory);

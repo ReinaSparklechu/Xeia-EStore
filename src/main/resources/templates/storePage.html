@@ -34,7 +34,8 @@
     <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Consumable'" th:text = "${item.getEffect()}"></span>
     <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Consumable'" th:text="${item.getQuality()}"></span>
     <span th:text = "${inventory.get(item)}">quantity</span>
-    <input type="checkbox" th:object="${customer}" th:field="*{cartBuffer}"   th:value="${item.name} " >
+    <input type="number"  min="0" th:max ="${inventory.get(item)}" th:field = " ${customer.cartBuffer[__${item.name}__]}" >
+
 </div>
 
     <button type="submit">add to cart</button>

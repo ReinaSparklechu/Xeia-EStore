@@ -30,7 +30,7 @@ public class Customer {
     private String password;
     private Map<Item, Integer> inventory = new HashMap<>();
     private Map<Item, Integer> shoppingCart = new HashMap<>();
-    private  List<String> cartBuffer = new ArrayList<>();
+    private  Map<String, Integer> cartBuffer = new HashMap<>();
     private long userId;
 
     private String lastVisited;
@@ -44,28 +44,31 @@ public class Customer {
         List<Item> itemList = new ArrayList<>();
         Item[] keyset = inventory.keySet().toArray(new Item[0]);
         System.out.println("Buffer contains" + cartBuffer);
-        for(String s: cartBuffer) {
-            for(Item i : keyset) {
-                if(i.getName().equals(s)){
-                    System.out.println("Adding to cart item:" + i);
-                    addToCart(i);
+        for(String s: cartBuffer.keySet()) {
+            if(cartBuffer.get(s) != null) {
+                for (Item i : keyset) {
+                    if (i.getName().equals(s)) {
+
+                        System.out.println("Adding to cart item:" + i);
+                        addToCart(i, cartBuffer.get(s));
+                    }
                 }
             }
         }
-        cartBuffer.removeAll(cartBuffer);
+        cartBuffer.clear();
     }
     //method to add item into cart, if item exists, increment by 1 else, enter new entry.
-    private void addToCart(Item i) {
+    public void addToCart(Item i, int j) {
         List<Item> keylist = shoppingCart.keySet().stream().toList();
         if(keylist.contains(i)) {
             shoppingCart.forEach((item, integer) -> {
                 if(item.getName().equals(i.getName())){
-                    shoppingCart.replace(item, integer +1);
+                    shoppingCart.replace(item, integer +j);
                 }
             });
             System.out.println("replaced");
         } else {
-            shoppingCart.put(i,1);
+            shoppingCart.put(i,j);
         }
     }
 }

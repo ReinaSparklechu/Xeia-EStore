@@ -25,4 +25,11 @@ public class Consumable extends Item{
             return false;
         }
     }
+
+    public String toString() {
+        return "\nEquipment (Name=" + this.getName()
+                + ", Price=" + this.getPrice()
+                + ", Quality=" + this.quality
+                + ", Effect=" + this.effect +')';
+    }
 }
