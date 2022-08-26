@@ -28,8 +28,8 @@ create table if not exists Customer(
     userId identity ,
     username varchar(32) not null,
     passwordHash varchar2(32) not null,
-    funds int
-
+    funds int,
+    authority varchar2(32) not null
 
 );
 create table if not exists Customer_Cart

@@ -8,10 +8,10 @@
     <link rel="stylesheet" th:href="@{/storeStyle.css}" type = "text/css">
 </head>
 <body>
+
 <form th:object="${customer}" method="post">
-<div th:if="${AccountNotFound}" th:text="#{${AccountNotFound}}"></div>
-    <div th:text="*{username}"></div>
-    <div th:text="*{password}"></div>
+<p th:if="${#fields.hasErrors('global')}" th:each="err: ${#fields.errors()}" th:text="${err}" class="ui-state-error-text"></p>
+
 
 
     <label for="username">Username: </label>

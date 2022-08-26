@@ -54,4 +54,9 @@ public class FirestoreCustomerRepository implements CustomerRepository{
     public void updateFund(Customer c) {
 
     }
+
+    @Override
+    public Customer findCustomer(String username) {
+        return null;
+    }
 }

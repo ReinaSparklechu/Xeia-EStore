@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 import javax.validation.constraints.NotBlank;
@@ -15,7 +18,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @NoArgsConstructor
 
-public class Customer {
+public class Customer implements UserDetails {
     @NonNull
     @NotBlank
     @Pattern(regexp = "^[0-9a-zA-Z_]{9,32}", message = "Username must be at least 9 characters long, max of 32 characters")
@@ -78,5 +81,30 @@ public class Customer {
         } else {
             shoppingCart.put(i,j);
         }
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(new SimpleGrantedAuthority("User"));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

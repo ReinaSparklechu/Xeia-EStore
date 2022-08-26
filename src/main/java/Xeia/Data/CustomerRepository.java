@@ -13,4 +13,6 @@ public interface CustomerRepository {
     void updateInventory(Customer c);
 
     void updateFund(Customer c);
+
+    Customer findCustomer(String username);
 }

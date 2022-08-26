@@ -8,6 +8,7 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,6 +16,7 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.io.FileInputStream;
@@ -29,6 +31,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 
 
 @Repository
@@ -61,7 +64,15 @@ public class JdbcCustomerRepository implements CustomerRepository {
 
     }
 
-
+    @Override
+    public Customer findCustomer(String username) {
+        Customer authenticated = jdbc.queryForObject("select username, userid, funds from Customer where username = ?" , this::mapRowToCustomer, username);
+        if(authenticated != null) {
+            System.out.println(authenticated);
+            return authenticated;
+        }
+        throw new UsernameNotFoundException("User :" + username + " not found");
+    }
 
     private String convertToHex(final byte[] messageDigest) {
         BigInteger bigint = new BigInteger(1, messageDigest);
