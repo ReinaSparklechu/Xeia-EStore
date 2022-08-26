@@ -18,7 +18,6 @@ public class CustomerService {
     ItemRepository itemRepo;
     @Autowired
     public CustomerService(CustomerRepository custRepo, ItemRepository itemRepo) {
-        System.out.println("created service bean");
         this.custRepo = custRepo;
         this.itemRepo = itemRepo;
     }
@@ -32,6 +31,7 @@ public class CustomerService {
         boolean test = invBuffer.containsKey(cartItems.get(0));
         for(Map.Entry<Item, Integer> pair: cartBuffer.entrySet()) {
             if(invBuffer.keySet().stream().toList().contains(pair.getKey())) {
+
                 //use invbuffer for each workaround
                 for(Map.Entry<Item, Integer> invPair: invBuffer.entrySet()) {
                     if(invPair.getKey().equals(pair.getKey())) {
@@ -55,9 +55,7 @@ public class CustomerService {
 
 
     }
-    private void transferCartToInv() {
 
-    }
     public void updateCustomer(Customer c) {
         custRepo.updateCart(c);
         custRepo.updateInventory(c);

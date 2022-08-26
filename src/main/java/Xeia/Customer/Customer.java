@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Data
 @RequiredArgsConstructor
@@ -57,7 +54,18 @@ public class Customer {
             }
         }
         cartBuffer.clear();
+        //TODO: sort the cart
+        Map<Item,Integer> cart = getShoppingCart();
+        Item[] cartItems = new Item[cart.keySet().size()];
+        cart.keySet().toArray(cartItems);
+        Arrays.sort(cartItems, Comparator.comparing(Item::getName));
+        Map<Item, Integer> sorted = new TreeMap<>(Comparator.comparing(Item::getName))
+        for (Item i: cartItems) {
+            sorted.put(i,cart.get(i));
+
+        }
     }
+
     //method to add item into cart, if item exists, increment by 1 else, enter new entry.
     public void addToCart(Item i, int j) {
         List<Item> keylist = shoppingCart.keySet().stream().toList();

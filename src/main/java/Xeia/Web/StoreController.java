@@ -74,22 +74,17 @@ public class StoreController {
         customerService.checkoutCart(customer);
         //deduct funds and update cust object
         int cost = totalCost.get();
-        System.out.println("Total cost is: " + cost);
         customer.setFunds(customer.getFunds() - cost);
 
         //update db
         customerService.updateCustomer(customer);
-        System.out.println(customer.getShoppingCart());
-        System.out.println(customer.getInventory());
-        model.addAttribute("customer", customer);
+
         return "redirect:/";
     }
     @PostMapping
     public String addtoCart(Model model, @ModelAttribute("customer")Customer customer) {
-        System.out.println(customer.getLastVisited());
         Map<Item, Integer> inventory = itemRepository.loadInventory(customer.getLastVisited());
         customer.consolidateCart(inventory);
-        System.out.println(customer.getShoppingCart());
         model.addAttribute("customer", customer);
         return "redirect:/store";
     }

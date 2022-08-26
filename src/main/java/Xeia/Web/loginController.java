@@ -36,20 +36,18 @@ public class loginController {
         return "login";
     }
 
+    //todo bind error messages and return it to user
     @PostMapping
     public String authenticate(Model model, @ModelAttribute("customer") Customer customer, Errors err) throws NoSuchAlgorithmException {
-        System.out.println("logging in customer: " + customer);
         String pass = customer.getPassword();
         MessageDigest md5 = MessageDigest.getInstance("MD5");
         byte[] hashed = md5.digest(pass.getBytes(StandardCharsets.UTF_8));
         String hashedString = convertToHex(hashed);
         Customer auth = customerRepo.loginCustomer(customer.getUsername(), hashedString);
         if(auth ==null) {
-            System.out.println("login failed");
             model.addAttribute("customer", customer);
             return"login";
         } else {
-            System.out.println("login success");
             model.addAttribute("customer", auth);
         }
         return "redirect:/";

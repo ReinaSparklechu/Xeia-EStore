@@ -45,8 +45,6 @@ public class JdbcCustomerRepository implements CustomerRepository {
     public Customer loginCustomer(String name, String passHash) {
         try{
             String auth = jdbc.queryForObject("Select passwordHash from Customer where username = \'" + name +"\'", String.class);
-            System.out.println("queried");
-            System.out.println("queried hash: " + auth + "\nGiven hash: " + passHash);
             if(auth.equals(passHash)) {
                 System.out.println("authenticating");
                 Customer authenticated = jdbc.queryForObject("select username, userid, funds from Customer where username = ?" , this::mapRowToCustomer, name);
@@ -79,7 +77,6 @@ public class JdbcCustomerRepository implements CustomerRepository {
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(newCustomer.getPassword().getBytes(StandardCharsets.UTF_8));
         String passwordHash = convertToHex(md.digest());
-        System.out.println("Bytes for password: " + newCustomer.getPassword() +" is: " + passwordHash);
         PreparedStatementCreatorFactory pscf = new PreparedStatementCreatorFactory("insert into Customer (username, passwordHash) values (?,?)", Types.VARCHAR,Types.VARCHAR);
         pscf.setReturnGeneratedKeys(true);
         PreparedStatementCreator psc = pscf.newPreparedStatementCreator(
@@ -90,7 +87,6 @@ public class JdbcCustomerRepository implements CustomerRepository {
         jdbc.update(psc,kh);
         jdbc.update("update Customer set userId = " + kh.getKey().longValue() + " where username = \'" + newCustomer.getUsername() + "\' and userId = null");
         newCustomer.setUserId(kh.getKey().longValue());
-        System.out.println("Signup complete for: " + newCustomer);
     }
     private Customer mapRowToCustomer(ResultSet rs, int rowNum)throws SQLException {
         return new Customer(rs.getString("userName"), rs.getLong("userId"), rs.getInt("funds"));
@@ -108,7 +104,6 @@ public class JdbcCustomerRepository implements CustomerRepository {
             dbCart.remove(item);
         }));
         if(!dbCart.isEmpty()) {
-            System.out.println("removing leftover items");
             for (String itemName: dbCart) {
                 jdbc.update("delete from Customer_Cart where Item_Name = \'" + itemName +"\'");
             }

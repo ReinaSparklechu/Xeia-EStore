@@ -30,7 +30,6 @@ public class JdbcItemRepository implements ItemRepository {
         } else if(rs.getBoolean("isEquipment")) {
             return new Equipment(rs.getString("name"), rs.getInt("price"), rs.getInt("itemLvl"), rs.getBoolean("isEnchantable"), rs.getString("enchantment"));
         } else {
-            System.out.println("Item could not be formed properly, returning null");
             return null;
         }
     }
@@ -38,6 +37,7 @@ public class JdbcItemRepository implements ItemRepository {
     private Integer mapRowToInteger(ResultSet rs, int rowNum) throws SQLException {
         return Integer.valueOf(rs.getInt("quantity"));
     }
+
     public Map<Item,Integer> loadInventory(String store) {
 
         List<Item> items;

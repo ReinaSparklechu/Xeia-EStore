@@ -33,6 +33,11 @@ public class HomeController {
 
 
     }
+    //todo: allow users to see whats in their cart
+    @GetMapping("cart")
+    public String viewCart(){
+
+    }
 
 
 
