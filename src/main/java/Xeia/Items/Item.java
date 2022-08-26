@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class Item {
+
     private String name;
     private int price;
 
@@ -19,7 +20,7 @@ public class Item {
             return false;
         }
         Item j = (Item) i;
-        return (j.getName().equalsIgnoreCase(this.name));
+        return j.getName().equalsIgnoreCase(this.name);
     }
 
 

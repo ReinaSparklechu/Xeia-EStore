@@ -69,28 +69,19 @@ public class StoreController {
         //iterate through cart
         cartBuffer.forEach((cartItem, cartQuantity) -> {
             //add to cost
-            totalCost.set(cartItem.getPrice() * cartQuantity.intValue());
-            //iterate through inventory
-            invBuffer.forEach((invItem, invQuantity) -> {
-                //if item is found in inventory, increment by quantity
-                if(invItem.equals(cartItem)) {
-                    invQuantity+= cartQuantity;
-                } else {
-                    //insert new pair into inventory
-                    invBuffer.put(cartItem,cartQuantity);
-
-                }
-            });
+            totalCost.set(cartItem.getPrice() * cartQuantity.intValue() + totalCost.get());
         });
-        //deduct funds
+        customerService.checkoutCart(customer);
+        //deduct funds and update cust object
         int cost = totalCost.get();
         System.out.println("Total cost is: " + cost);
         customer.setFunds(customer.getFunds() - cost);
+
         //update db
         customerService.updateCustomer(customer);
-        // TODO: 20/8/2022 implement checkout process 
         System.out.println(customer.getShoppingCart());
         System.out.println(customer.getInventory());
+        model.addAttribute("customer", customer);
         return "redirect:/";
     }
     @PostMapping

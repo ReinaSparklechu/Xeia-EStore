@@ -63,9 +63,5 @@ public class JdbcItemRepository implements ItemRepository {
         }
         return inventory;
     }
-    //todo
-    public void makeSale(Customer customer) {
-
-    }
 
 }

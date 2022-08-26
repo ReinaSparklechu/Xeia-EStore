@@ -33,6 +33,7 @@ public class SignupController {
             return "signup";
         } else {
             try{
+                customer.setFunds(1000);
                 customerRepo.signUpCustomer(customer);
                 return "redirect:/";
             } catch (Exception e) {

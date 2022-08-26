@@ -27,10 +27,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 
@@ -99,26 +96,34 @@ public class JdbcCustomerRepository implements CustomerRepository {
         return new Customer(rs.getString("userName"), rs.getLong("userId"), rs.getInt("funds"));
     }
 
-    //todo get list of items in cart, if item in db but not in cart, remove those items
+
     public void updateCart(Customer customer) {
+
         PreparedStatementCreatorFactory pscf = new PreparedStatementCreatorFactory("insert into Customer_Cart(userId, Item_name, Quantity) values ( ?,?,? )", Types.BIGINT, Types.VARCHAR, Types.INTEGER);
+        List<String> dbCart = jdbc.query("select item_name from Customer_Cart where userId = " +customer.getUserId(),this::mapInv);
         //process shopping cart and update db
         customer.getShoppingCart().forEach(((item, integer) -> {
             PreparedStatementCreator psc = pscf.newPreparedStatementCreator(Arrays.asList(customer.getUserId(),item.getName(),integer.intValue()));
             jdbc.update(psc);
+            dbCart.remove(item);
         }));
+        if(!dbCart.isEmpty()) {
+            System.out.println("removing leftover items");
+            for (String itemName: dbCart) {
+                jdbc.update("delete from Customer_Cart where Item_Name = \'" + itemName +"\'");
+            }
 
+        }
 
     }
     private String mapInv(ResultSet rs, int rowNum) throws SQLException {
         return rs.getString("Item_Name");
     }
-    //todo use the list to remove any items potentially no longer in inventory
     public void updateInventory(Customer customer){
         List<String> dbInv;
-        PreparedStatementCreatorFactory pscfCheck = new PreparedStatementCreatorFactory("select Item_Name from Customer_Invetory where userId = ?", Types.BIGINT);
+        PreparedStatementCreatorFactory pscfCheck = new PreparedStatementCreatorFactory("select Item_Name from Customer_Inventory where userId = ?", Types.BIGINT);
         PreparedStatementCreatorFactory pscfInsert = new PreparedStatementCreatorFactory("insert into Customer_Inventory(userId, Item_name, Quantity) values ( ?,?,? )", Types.BIGINT, Types.VARCHAR, Types.INTEGER);
-        PreparedStatementCreatorFactory pscfUpdate = new PreparedStatementCreatorFactory("update Customer_Inventory(Quantity) values ( ? ) where userId = \'" + customer.getUserId() + "\' and Item_name = ?", Types.INTEGER, Types.VARCHAR);
+        PreparedStatementCreatorFactory pscfUpdate = new PreparedStatementCreatorFactory("update Customer_Inventory set Quantity = ? where userId = " + customer.getUserId() + " and Item_name = ?", Types.INTEGER, Types.VARCHAR);
         //get list of current items in cust db inventory
         PreparedStatementCreator psc= pscfCheck.newPreparedStatementCreator(Arrays.asList(customer.getUserId()));
         dbInv = jdbc.query(psc,this::mapInv);
@@ -132,11 +137,20 @@ public class JdbcCustomerRepository implements CustomerRepository {
                 PreparedStatementCreator insert = pscfInsert.newPreparedStatementCreator(Arrays.asList(customer.getUserId(),item.getName(),integer));
                 jdbc.update(insert);
             }
+            dbInv.remove(item.getName());
         });
+        if(!dbInv.isEmpty()) {
+            //delete from db
+            for (String itemName: dbInv) {
+                jdbc.update("delete from Customer_Inventory where Item_Name = \'" + itemName +"\'");
+            }
+
+        }
     }
 
     @Override
     public void updateFund(Customer c) {
+        jdbc.update("Update customer set funds = ? where userId = \'" + c.getUserId() + "\'", c.getFunds());
 
     }
 }

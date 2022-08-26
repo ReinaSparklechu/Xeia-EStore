@@ -1,26 +1,37 @@
 package Xeia.Web;
 
 import Xeia.Customer.Customer;
+import Xeia.Services.CustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/")
 @SessionAttributes("customer")
 public class HomeController {
 
+    CustomerService customerService;
     @ModelAttribute("customer")
     public Customer customer() {
-        return new Customer();
+        Customer guest = new Customer();
+        guest.setUsername("guest");
+        return guest;
     }
 
     @GetMapping
     public String home(){
         return "home";
+    }
+
+    @PostMapping("/logout")
+    public String logout(Model model, @ModelAttribute("customer") Customer customer){
+        customerService.updateCustomer(customer);
+        customer = new Customer();
+        customer.setUsername("Guest");
+        return "redirect:/";
+
+
     }
 
 
