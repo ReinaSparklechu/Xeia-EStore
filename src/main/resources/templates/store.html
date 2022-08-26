@@ -8,29 +8,30 @@
     <link rel="stylesheet" th:href="@{/storeStyle.css}" type = "text/css">
 </head>
 <body>
-Welcome to the store
+<h1>Store Navigation Page</h1>
+<div th:object="${customer}" class = "CustTracker">
+    <label for="username">Username: </label>
+    <div th:text=" *{username}" id = "username"></div>
+
+    <label for="inventory Size">Inventory size:</label>
+    <div th:text="*{getInventory().keySet().size()}" id = "inventory size"></div>
+
+    <label for="Cart size">Items in cart: </label>
+    <div th:text="*{getShoppingCart().size()}" id = "Cart size"></div>
+    <label for="Cart">Cart Items</label>
+    <select name="Cart">
+        <option th:each = "item: ${customer.getShoppingCart()}" th:text="${item.getKey().getName()} +' Qty: ' + ${item.getValue()}"></option>
+    </select>
+</div>
 <div>
-    <div th:object="${customer}" class = "CustTracker">
-        <label for="username">Username: </label>
-        <div th:text=" *{username}" id = "username"></div>
-        <br/>
 
-        <label for="inventory Size">Inventory size:</label>
-        <div th:text="*{getInventory().keySet().size()}" id = "inventory size"></div>
-        <br/>
-
-        <label for="Cart size">Items in cart: </label>
-        <div th:text="*{getShoppingCart().size()}" id = "Cart size"></div>
-        <br>
-        <label for="Cart">Cart Items</label>
-        <select name="Cart">
-            <option th:each = "item: ${customer.getShoppingCart()}" th:text="${item.getKey().getName()} +' Qty: ' + ${item.getValue()}"></option>
-        </select>
-    </div>
     <div>
         <a href="/store/smithy">Smith</a>
+        <br>
         <a href="/store/apothecary">Apothecary</a>
+        <br>
         <a href="/store/tailor">Tailor</a>
+        <br>
         <a href="/cart">View Cart</a>
     </div>
     <form th:action="@{/store/checkout}" method="post">

@@ -24,20 +24,22 @@
 <h1 th:text="${storeName}">defaultHolder</h1>
 <form method="post" th:action = "@{/store}">
     <input type="hidden" th:object="${customer}"  th:field="*{lastVisited}" th:value="${storeName}">
-<div th:each="item: ${#lists.toList(inventory.keySet())}" class="itemCard">
-    <span th:text="${item.getName()}"></span>
-    <span th:text = "${item.getPrice()}"></span>
-
-    <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Equipment'" th:text = "${item.isEnchantable()}"></span>
-    <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Equipment'" th:text="${item.getEnchantment()}"></span>
-    <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Equipment'" th:text="${item.getItemLvl()}"></span>
-    <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Consumable'" th:text = "${item.getEffect()}"></span>
-    <span th:if = "${item.getClass().getName()} == 'Xeia.Items.Consumable'" th:text="${item.getQuality()}"></span>
-    <span th:text = "${inventory.get(item)}">quantity</span>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Select Qty.</th>
+        </tr>
+<tr th:each="item: ${#lists.toList(inventory.keySet())}" th:class="'tr'+__${#lists.toList(inventory.keySet()).indexOf(item)%2}__">
+    <td th:text="${item.getName()}" ></td>
+    <td th:text = "${item.getPrice()}"></td>
+    <td th:text = "${inventory.get(item)}">quantity</td>
+    <td>
     <input type="number"  min="0" th:max ="${inventory.get(item)}" th:field = " ${customer.cartBuffer[__${item.name}__]}" >
-
-</div>
-
+    </td>
+</tr>
+    </table>
     <button type="submit">add to cart</button>
 </form>
 

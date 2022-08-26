@@ -6,6 +6,7 @@ import Xeia.Data.JdbcCustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,13 +39,14 @@ public class loginController {
 
     //todo bind error messages and return it to user
     @PostMapping
-    public String authenticate(Model model, @ModelAttribute("customer") Customer customer, Errors err) throws NoSuchAlgorithmException {
+    public String authenticate(Model model, @ModelAttribute("customer") Customer customer, Errors err, BindingResult result) throws NoSuchAlgorithmException {
         String pass = customer.getPassword();
         MessageDigest md5 = MessageDigest.getInstance("MD5");
         byte[] hashed = md5.digest(pass.getBytes(StandardCharsets.UTF_8));
         String hashedString = convertToHex(hashed);
         Customer auth = customerRepo.loginCustomer(customer.getUsername(), hashedString);
         if(auth ==null) {
+            result.addError(new AccountNotFoundException());
             model.addAttribute("customer", customer);
             return"login";
         } else {

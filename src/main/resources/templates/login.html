@@ -9,6 +9,7 @@
 </head>
 <body>
 <form th:object="${customer}" method="post">
+<div th:if="${AccountNotFound}" th:text="#{${AccountNotFound}}"></div>
     <div th:text="*{username}"></div>
     <div th:text="*{password}"></div>
 

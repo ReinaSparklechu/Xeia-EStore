@@ -8,11 +8,53 @@
 div{
     background-color: beige;
     padding: 1vh;
-    outline-color: black;
-    outline-style: dashed;
-    outline-width: medium;
+    border: black dashed medium;
     margin: 1vh;
+    width: fit-content;
+}
+.CustTracker{
+    width: fit-content;
 }
 span {
     background-color: beige;
+}
+table {
+    border: 2px solid saddlebrown;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    width: 25%;
+    height: fit-content;
+    padding: 4px;
+    margin-bottom: 20px;
+    border-spacing: 5px;
+    border-collapse: collapse;
+}
+
+th {
+    font-weight: bolder;
+
+    border-bottom: 2px black solid;
+    background-color: #bd9a80;
+    text-align: left;
+    width: 25%;
+    margin-bottom: 3px;
+}
+tr{
+    margin: 3px 0;
+    padding: 2px;
+    border-bottom: 2px black solid;
+}
+td {
+    background: rgba(255, 255, 255, 0);
+    padding: 2px;
+    margin: auto;
+    text-align: left;
+
+}
+.tr0{
+    background-color: #ffe2cc;
+}
+.tr1{
+    background-color: #e8c9a7;
+
 }
