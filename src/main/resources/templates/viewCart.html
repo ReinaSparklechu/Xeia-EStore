@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns = "http://www.w3.org/1999/xhtml"
+      xmlns:th = "http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Cart</title>
+  <link rel="stylesheet" th:href="@{/storeStyle.css}" type = "text/css">
+</head>
+
+<!--todo needs styling -->
+<h1>Your cart contains</h1>
+  <table>
+    <tr>
+      <th>Quantity</th>
+      <th>Item name</th>
+      <th>Price</th>
+    </tr>
+    <tr th:each="item: ${customer.getShoppingCart()}">
+      <td th:text = "${item.getValue()}"></td>
+      <td th:text="${item.getKey().getName()}"></td>
+      <td th:text = "${item.getKey().getPrice()}"></td>
+    </tr>
+  </table>
+</html>

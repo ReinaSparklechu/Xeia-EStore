@@ -25,6 +25,10 @@
 
         <label for = "Funds">Funds: </label>
         <div th:text = "*{funds}" id = "funds"></div>
+        <label for="Cart">Cart Items</label>
+        <select name="Cart">
+            <option th:each = "item: ${customer.getShoppingCart()}" th:text="${item.getKey()} +' ' + ${item.getValue()}"></option>
+        </select>
     </div>
 </div>
 

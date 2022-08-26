@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Xeia Store Page</title>
+    <link rel="stylesheet" th:href="@{/storeStyle.css}" type = "text/css">
 </head>
 <body>
 Welcome to the store
@@ -21,15 +22,16 @@ Welcome to the store
         <label for="Cart size">Items in cart: </label>
         <div th:text="*{getShoppingCart().size()}" id = "Cart size"></div>
         <br>
+        <label for="Cart">Cart Items</label>
+        <select name="Cart">
+            <option th:each = "item: ${customer.getShoppingCart()}" th:text="${item.getKey().getName()} +' Qty: ' + ${item.getValue()}"></option>
+        </select>
     </div>
     <div>
         <a href="/store/smithy">Smith</a>
-    </div>
-    <div>
         <a href="/store/apothecary">Apothecary</a>
-    </div>
-    <div>
         <a href="/store/tailor">Tailor</a>
+        <a href="/cart">View Cart</a>
     </div>
     <form th:action="@{/store/checkout}" method="post">
         <button type="submit" >Checkout</button>

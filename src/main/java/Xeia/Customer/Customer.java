@@ -25,7 +25,7 @@ public class Customer {
     @Pattern(regexp = "^[0-9a-zA-Z_]{9,32}", message ="password must be at least 9 characters long, max of 32 characters" )
     private String password;
     private Map<Item, Integer> inventory = new HashMap<>();
-    private Map<Item, Integer> shoppingCart = new HashMap<>();
+    private Map<Item, Integer> shoppingCart = new TreeMap<>(Comparator.comparing(Item::getName));
     private  Map<String, Integer> cartBuffer = new HashMap<>();
     private long userId;
 
@@ -54,16 +54,15 @@ public class Customer {
             }
         }
         cartBuffer.clear();
-        //TODO: sort the cart
         Map<Item,Integer> cart = getShoppingCart();
         Item[] cartItems = new Item[cart.keySet().size()];
         cart.keySet().toArray(cartItems);
-        Arrays.sort(cartItems, Comparator.comparing(Item::getName));
-        Map<Item, Integer> sorted = new TreeMap<>(Comparator.comparing(Item::getName))
+        Map<Item, Integer> sorted = new TreeMap<>(Comparator.comparing(Item::getName));
         for (Item i: cartItems) {
             sorted.put(i,cart.get(i));
 
         }
+        this.shoppingCart = sorted;
     }
 
     //method to add item into cart, if item exists, increment by 1 else, enter new entry.
