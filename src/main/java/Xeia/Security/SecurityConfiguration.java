@@ -40,6 +40,8 @@ public class SecurityConfiguration {
                 .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/store", true).failureForwardUrl("/login")
                 .and()
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID")
+                .and()
                 .csrf().disable().headers().frameOptions().disable().and()
                 .build();
     }

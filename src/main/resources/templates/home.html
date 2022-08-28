@@ -35,6 +35,8 @@
 <div><a href="/store">store</a></div>
 <div><a href="/login">login</a></div>
 <div><a href="/signup">signup</a> </div>
-<button type="submit" th:action="@{/logout}" th:method="post">Logout</button>
+<form th:object="${customer}" th:action="@{/logout}" th:method="post">
+<button type="submit">Logout</button>
+</form>
 </body>
 </html>
