@@ -1,6 +1,7 @@
 package Xeia.Data;
 
 import Xeia.Customer.Customer;
+import Xeia.Items.Item;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
@@ -14,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Map;
 
 
 public class FirestoreCustomerRepository implements CustomerRepository{
@@ -57,6 +59,11 @@ public class FirestoreCustomerRepository implements CustomerRepository{
 
     @Override
     public Customer findCustomer(String username) {
+        return null;
+    }
+
+    @Override
+    public Map<Item, Integer> getCustomerInventoryById(long custId) {
         return null;
     }
 }

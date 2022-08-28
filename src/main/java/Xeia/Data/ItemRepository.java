@@ -6,4 +6,7 @@ import java.util.Map;
 
 public interface ItemRepository {
     public Map<Item,Integer> loadInventory(String store);
+    public void updateEntryForId(String ownerId, Item i, int quantity);
+
+    public int getEntryQuantityById(String ownerId, Item i);
 }

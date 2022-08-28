@@ -36,11 +36,11 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
         return security.authorizeRequests()
                 .antMatchers("/admin").access("hasRole('ADMIN')")
-                .antMatchers("/", "/**").access("permitAll()")
+                .antMatchers("/", "/**", "/h2-console/**").access("permitAll()")
                 .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/store", true).failureForwardUrl("/login")
                 .and()
-                .csrf().disable()
+                .csrf().disable().headers().frameOptions().disable().and()
                 .build();
     }
 }

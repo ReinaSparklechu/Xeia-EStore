@@ -57,11 +57,30 @@ public class JdbcItemRepository implements ItemRepository {
             inventory = jdbc.query("select i.name, i.price, i.itemLvl, i.isEnchantable, i.enchantment , i.isConsumable, i.isEquipment, s.quantity from Items i , Item_Owner s where s.Store_Id = \'" + storeId +"\' and i.name = s.Item_Name" , this::mapRowToItem);
         }
         for(Map.Entry e : inventory) {
-            invMap.put((Item) e.getKey(), (Integer) e.getValue());
+            var i = (Item) e.getKey();
+            var q = (Integer) e.getValue();
+            i.setOwner(storeId);
+            invMap.put(i,q);
 
         }
 
         return invMap;
+    }
+
+    @Override
+    public int getEntryQuantityById(String ownerId, Item item) {
+        return jdbc.queryForObject("Select quantity from Item_Owner where store_Id = ? and item_Name = ? ", new RowMapper<Integer>() {
+            @Override
+            public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return rs.getInt("Quantity");
+            }
+        }, ownerId, item.getName());
+
+    }
+
+    @Override
+    public void updateEntryForId(String ownerId, Item i, int quantity) {
+        jdbc.update("update Item_Owner set quantity = ? where item_name = ? and Store_Id = ? ", quantity, i.getName(), ownerId);
     }
 
 }

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class CustomerService {
@@ -41,9 +43,22 @@ public class CustomerService {
             } else {
                 invBuffer.put(pair.getKey(), pair.getValue());
             }
+            String owner = pair.getKey().getOwner();
+            //todo
+            //query the whole mapping from item owner
+            int ownerQuantity = itemRepo.getEntryQuantityById(owner, pair.getKey());
+            int cartQuantity = cartBuffer.get(pair.getKey());
+            Logger.getLogger("Global").log(Level.FINE, "Owner q is " + ownerQuantity + " and cart Q is " + cartQuantity);
+            //find the current quantity
+
+            //subtract using pair.getvalue
+
+            //update item owner
+            itemRepo.updateEntryForId(pair.getKey().getOwner(), pair.getKey(), ownerQuantity - cartQuantity);
         }
         System.out.println("Inv buffer: " +invBuffer);
         System.out.println("Cart buffer: " + cartBuffer);
+        // before clearing, get each item's entry in from the db using item.owner, update quantity of items
         cartBuffer.clear();
         c.setInventory(invBuffer);
         c.setShoppingCart(cartBuffer);

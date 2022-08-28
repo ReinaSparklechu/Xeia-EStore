@@ -74,6 +74,11 @@ public class JdbcCustomerRepository implements CustomerRepository {
         throw new UsernameNotFoundException("User :" + username + " not found");
     }
 
+    @Override
+    public Map<Item, Integer> getCustomerInventoryById(long custId) {
+        return null;
+    }
+
     private String convertToHex(final byte[] messageDigest) {
         BigInteger bigint = new BigInteger(1, messageDigest);
         String hexText = bigint.toString(16);
@@ -126,6 +131,7 @@ public class JdbcCustomerRepository implements CustomerRepository {
         return rs.getString("Item_Name");
     }
     public void updateInventory(Customer customer){
+
         List<String> dbInv;
         PreparedStatementCreatorFactory pscfCheck = new PreparedStatementCreatorFactory("select Item_Name from Item_Owner where cust_id = ?", Types.BIGINT);
         PreparedStatementCreatorFactory pscfInsert = new PreparedStatementCreatorFactory("insert into Item_Owner(cust_id, Item_name, Quantity) values ( ?,?,? )", Types.BIGINT, Types.VARCHAR, Types.INTEGER);
