@@ -35,20 +35,25 @@ values ( 'Antidote', 10, false, true, '3', 'Heals PoisonStatus');
 insert into Items(name, price, isEquipment, isConsumable , quality , effect)
 values ( 'Ration', 5, false, true, '4', 'Stamina Restore');
 
-insert into Item_Store(store_name, item_name, quantity) values ('apothecary', 'Health Potion' , 10 );
-insert into Item_Store(store_name, item_name, quantity) values ('apothecary', 'Mana Potion' , 10 );
-insert into Item_Store(store_name, item_name, quantity) values ('apothecary', 'Antidote' , 10 );
-insert into Item_Store(store_name, item_name, quantity) values ('apothecary', 'Ration' , 10 );
-insert into Item_Store(store_name, item_name, quantity) values ('tailor', 'Boots' , 5 );
-insert into Item_Store(store_name, item_name, quantity) values ('tailor', 'Leather Pants' , 5 );
-insert into Item_Store(store_name, item_name, quantity) values ('tailor', 'Leather Vest' , 5 );
-insert into Item_Store(store_name, item_name, quantity) values ('tailor', 'Leather Gloves' , 5 );
-insert into Item_Store(store_name, item_name, quantity) values ('tailor', 'Hunting Hat' , 5 );
-insert into Item_Store(store_name, item_name, quantity) values ('smithy', 'Helmet' , 5 );
-insert into Item_Store(store_name, item_name, quantity) values ('smithy', 'Chestplate' , 5 );
-insert into Item_Store(store_name, item_name, quantity) values ('smithy', 'Cuisses' , 5 );
-insert into Item_Store(store_name, item_name, quantity) values ('smithy', 'Gauntlet' , 5 );
-insert into Item_Store(store_name, item_name, quantity) values ('smithy', 'Sword' , 5 );
-insert into Item_Store(store_name, item_name, quantity) values ('smithy', 'Axe' , 5 );
-insert into Item_Store(store_name, item_name, quantity) values ('smithy', 'Dagger' , 5 );
+insert into Store(Store_id, Store_name) values ( 'S00','apothecary');
+insert into Store(Store_id, Store_name) values ( 'S01','smithy');
+insert into Store(Store_id, Store_name) values ( 'S02','tailor');
+
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S00', 'Health Potion' , 10 );
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S00', 'Mana Potion' , 10 );
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S00', 'Antidote' , 10 );
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S00', 'Ration' , 10 );
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S02', 'Boots' , 5 );
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S02', 'Leather Pants' , 5 );
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S02', 'Leather Vest' , 5 );
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S02', 'Leather Gloves' , 5 );
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S02', 'Hunting Hat' , 5 );
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S01', 'Helmet' , 5 );
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S01', 'Chestplate' , 5 );
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S01', 'Cuisses' , 5 );
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S01', 'Gauntlet' , 5 );
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S01', 'Sword' , 5 );
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S01', 'Axe' , 5 );
+insert into Item_Owner(Store_Id, item_name, quantity) values ('S01', 'Dagger' , 5 );
+
 insert into Customer(username, passwordhash, funds, authority) values('username1234' , 'bdc87b9c894da5168059e00ebffb9077', 1000, 'USER');

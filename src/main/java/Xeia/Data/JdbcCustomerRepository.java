@@ -127,9 +127,9 @@ public class JdbcCustomerRepository implements CustomerRepository {
     }
     public void updateInventory(Customer customer){
         List<String> dbInv;
-        PreparedStatementCreatorFactory pscfCheck = new PreparedStatementCreatorFactory("select Item_Name from Customer_Inventory where userId = ?", Types.BIGINT);
-        PreparedStatementCreatorFactory pscfInsert = new PreparedStatementCreatorFactory("insert into Customer_Inventory(userId, Item_name, Quantity) values ( ?,?,? )", Types.BIGINT, Types.VARCHAR, Types.INTEGER);
-        PreparedStatementCreatorFactory pscfUpdate = new PreparedStatementCreatorFactory("update Customer_Inventory set Quantity = ? where userId = " + customer.getUserId() + " and Item_name = ?", Types.INTEGER, Types.VARCHAR);
+        PreparedStatementCreatorFactory pscfCheck = new PreparedStatementCreatorFactory("select Item_Name from Item_Owner where cust_id = ?", Types.BIGINT);
+        PreparedStatementCreatorFactory pscfInsert = new PreparedStatementCreatorFactory("insert into Item_Owner(cust_id, Item_name, Quantity) values ( ?,?,? )", Types.BIGINT, Types.VARCHAR, Types.INTEGER);
+        PreparedStatementCreatorFactory pscfUpdate = new PreparedStatementCreatorFactory("update Item_Owner set Quantity = ? where cust_id = " + customer.getUserId() + " and Item_name = ?", Types.INTEGER, Types.VARCHAR);
         //get list of current items in cust db inventory
         PreparedStatementCreator psc= pscfCheck.newPreparedStatementCreator(Arrays.asList(customer.getUserId()));
         dbInv = jdbc.query(psc,this::mapInv);
@@ -148,7 +148,7 @@ public class JdbcCustomerRepository implements CustomerRepository {
         if(!dbInv.isEmpty()) {
             //delete from db
             for (String itemName: dbInv) {
-                jdbc.update("delete from Customer_Inventory where Item_Name = \'" + itemName +"\'");
+                jdbc.update("delete from Item_Owner where Item_Name = ? and Cust_id = ?", itemName,customer.getUserId());
             }
 
         }

@@ -12,7 +12,7 @@ public class Item {
 
     private String name;
     private int price;
-
+    private String owner;
     @Override
     public int hashCode() {
         return Objects.hash(getName());
