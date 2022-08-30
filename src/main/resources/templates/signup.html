@@ -8,7 +8,7 @@
     <link rel="stylesheet" th:href="@{/storeStyle.css}" type = "text/css">
 </head>
 <body>
-<form th:object="${customer}" method="post" th:action="@{/signup}">
+<form th:object="${registrationForm}" method="post" th:action="@{/signup}">
     <div class = "loginForm">
         <div th:if = "${#fields.hasErrors()}" class = "error">
             Please correct the errors!
@@ -16,11 +16,14 @@
 
         <label for="username">User Name: </label>
         <input type="text" th:field="*{username}">
-        <div th:if ="${#fields.hasErrors('username')}" th:errors="*{username}">Username err</div>
+        <div th:if ="${#fields.hasErrors('username')}" th:errors="*{username}" class="error">Username err</div>
 
         <label for="Password">Password: </label>
         <input type="password" th:field = "*{password}">
-        <div th:if ="${#fields.hasErrors('password')}" th:errors="*{password}">passwordErr</div>
+        <div th:if ="${#fields.hasErrors('password')}" th:errors="*{password}" class="error">passwordErr</div>
+
+        <div th:if = "*{nameAlreadyExists}"  class="error">The username you choose has already been taken</div>
+
 
         <button type="submit">Signup!</button>
     </div>

@@ -93,12 +93,12 @@ public class JdbcCustomerRepository implements CustomerRepository {
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(newCustomer.getPassword().getBytes(StandardCharsets.UTF_8));
         String passwordHash = convertToHex(md.digest());
-        PreparedStatementCreatorFactory pscf = new PreparedStatementCreatorFactory("insert into Customer (username, passwordHash, authority) values (?,?, ?)", Types.VARCHAR,Types.VARCHAR,Types.VARCHAR);
+        PreparedStatementCreatorFactory pscf = new PreparedStatementCreatorFactory("insert into Customer (username, passwordHash, authority, funds) values (?,?,?,?)", Types.VARCHAR,Types.VARCHAR,Types.VARCHAR, Types.INTEGER);
         pscf.setReturnGeneratedKeys(true);
         PreparedStatementCreator psc = pscf.newPreparedStatementCreator(
                 Arrays.asList(
                         newCustomer.getUsername()
-                        , passwordHash, newCustomer.getAuthorities().stream().toList().get(0)));
+                        , passwordHash, newCustomer.getAuthorities().stream().toList().get(0),newCustomer.getFunds()));
         KeyHolder kh = new GeneratedKeyHolder();
         jdbc.update(psc,kh);
         jdbc.update("update Customer set userId = " + kh.getKey().longValue() + " where username = \'" + newCustomer.getUsername() + "\' and userId = null");

@@ -36,6 +36,11 @@ public class loginController {
         return hexText;
     }
 
+    @ModelAttribute("customer")
+    public Customer customer() {
+        return new Customer();
+    }
+
     @GetMapping
     public String login(Model model, @ModelAttribute("customer")Customer customer)
     {

@@ -71,6 +71,7 @@ public class StoreController {
             //add to cost
             totalCost.set(cartItem.getPrice() * cartQuantity.intValue() + totalCost.get());
         });
+        //todo dont allow for checkout if customer not enough funds
         customerService.checkoutCart(customer);
         //deduct funds and update cust object
         int cost = totalCost.get();

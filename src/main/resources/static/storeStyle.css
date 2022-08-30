@@ -12,6 +12,10 @@ div{
     margin: 1vh;
     width: fit-content;
 }
+.error {
+    border-width: 0;
+    color: indianred;
+}
 .CustTracker{
     width: fit-content;
 }
