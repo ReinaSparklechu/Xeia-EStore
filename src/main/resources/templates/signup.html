@@ -13,6 +13,7 @@
         <div th:if = "${#fields.hasErrors()}" class = "error">
             Please correct the errors!
         </div>
+        <div th:if = "${#fields.hasErrors('global')}" th:text="${#fields.allErrors('global')}"></div>
 
         <label for="username">User Name: </label>
         <input type="text" th:field="*{username}">

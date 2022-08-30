@@ -4,6 +4,7 @@ import Xeia.Customer.Customer;
 import Xeia.Customer.RegistrationForm;
 import Xeia.Data.CustomerRepository;
 import Xeia.Security.MD5Encoder;
+import Xeia.Services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,6 +30,8 @@ public class SignupController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    CustomerService customerService;
     @ModelAttribute("registrationForm")
     public RegistrationForm registrationForm(){
         return new RegistrationForm();
@@ -58,7 +61,7 @@ public class SignupController {
             System.out.println("caught: " + f);
             var newcust = registrationForm.toCustomer();
             newcust.setFunds(1000);
-            customerRepo.signUpCustomer(newcust);
+            customerService.registerCustomer(newcust);
             System.out.println("New customer signed up!");
             return"redirect:/login";
         }

@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 // TODO: 30/8/2022 add roles
 @Data
 @RequiredArgsConstructor
-public class Roles {
+public class Role {
     @NonNull
     private String name;
+    @NonNull
+    private long id;
 }

@@ -1,26 +1,20 @@
 package Xeia.Data;
 
 import Xeia.Customer.Customer;
+import Xeia.Customer.Role;
 import Xeia.Items.Item;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.cloud.FirestoreClient;
-import org.apache.commons.logging.Log;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
+
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
@@ -38,6 +32,9 @@ import java.util.logging.Logger;
 public class JdbcCustomerRepository implements CustomerRepository {
     private JdbcTemplate jdbc;
     @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
     public JdbcCustomerRepository(JdbcTemplate jdbc) throws IOException, ExecutionException, InterruptedException {
         this.jdbc = jdbc;
 
@@ -50,7 +47,9 @@ public class JdbcCustomerRepository implements CustomerRepository {
             String auth = jdbc.queryForObject("Select passwordHash from Customer where username = \'" + name +"\'", String.class);
             if(auth.equals(passHash)) {
                 System.out.println("authenticating");
-                Customer authenticated = jdbc.queryForObject("select username, userid, funds from Customer where username = ?" , this::mapRowToCustomer, name);
+                Customer authenticated = jdbc.queryForObject("select username, passwordHash,userid, funds from Customer where username = ?" , this::mapRowToCustomer, name);
+                List<Role> roles = roleRepository.getRoleByCustomerId(authenticated);
+                authenticated.setRoles(roles);
                 System.out.println("queried customer: " + authenticated);
                 return authenticated;
 
@@ -66,8 +65,10 @@ public class JdbcCustomerRepository implements CustomerRepository {
 
     @Override
     public Customer findCustomer(String username) {
-        Customer authenticated = jdbc.queryForObject("select username, userid, funds from Customer where username = ?" , this::mapRowToCustomer, username);
+        Customer authenticated = jdbc.queryForObject("select username, passwordHash, userid, funds from Customer where username = ?" , this::mapRowToCustomer, username);
         if(authenticated != null) {
+            List<Role> roles = roleRepository.getRoleByCustomerId(authenticated);
+            authenticated.setRoles(roles);
             System.out.println(authenticated);
             return authenticated;
         }
@@ -89,22 +90,23 @@ public class JdbcCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public void signUpCustomer(Customer newCustomer) throws NoSuchAlgorithmException {
+    public long signUpCustomer(Customer newCustomer) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(newCustomer.getPassword().getBytes(StandardCharsets.UTF_8));
         String passwordHash = convertToHex(md.digest());
-        PreparedStatementCreatorFactory pscf = new PreparedStatementCreatorFactory("insert into Customer (username, passwordHash, authority, funds) values (?,?,?,?)", Types.VARCHAR,Types.VARCHAR,Types.VARCHAR, Types.INTEGER);
+        PreparedStatementCreatorFactory pscf = new PreparedStatementCreatorFactory("insert into Customer (username, passwordHash,  funds) values (?,?,?)", Types.VARCHAR,Types.VARCHAR, Types.INTEGER);
         pscf.setReturnGeneratedKeys(true);
         PreparedStatementCreator psc = pscf.newPreparedStatementCreator(
                 Arrays.asList(
                         newCustomer.getUsername()
-                        , passwordHash, newCustomer.getAuthorities().stream().toList().get(0),newCustomer.getFunds()));
+                        , passwordHash,newCustomer.getFunds()));
         KeyHolder kh = new GeneratedKeyHolder();
         jdbc.update(psc,kh);
         newCustomer.setUserId(kh.getKey().longValue());
+        return newCustomer.getUserId();
     }
     private Customer mapRowToCustomer(ResultSet rs, int rowNum)throws SQLException {
-        return new Customer(rs.getString("userName"), rs.getLong("userId"), rs.getInt("funds"));
+        return new Customer(rs.getString("userName"), rs.getLong("userId"), rs.getInt("funds"), rs.getString("passwordHash"));
     }
 
 

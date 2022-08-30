@@ -15,9 +15,7 @@ import javax.validation.constraints.Pattern;
 import java.util.*;
 
 @Data
-@RequiredArgsConstructor
 @NoArgsConstructor
-
 public class Customer implements UserDetails {
 
     private String username;
@@ -31,11 +29,19 @@ public class Customer implements UserDetails {
 
     private String lastVisited;
     private int funds;
+    private List<Role> roles;
 
     public Customer(String userName, long userId, int funds) {
         this.username = userName;
         this.userId = userId;
         this.funds = funds;
+    }
+
+    public Customer(String userName, long userId, int funds, String passwordHash) {
+        this.username = userName;
+        this.userId = userId;
+        this.funds = funds;
+        this.password = passwordHash;
     }
 
     public void consolidateCart(Map<Item,Integer> inventory) {
@@ -80,9 +86,16 @@ public class Customer implements UserDetails {
         }
     }
 
+    // get roles and insert into authorities
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("User"));
+        List<GrantedAuthority> auth = new ArrayList<>();
+        System.out.println("GetAuthorities called");
+        for(Role r: roles) {
+            auth.add(new SimpleGrantedAuthority("ROLE_"+r.getName()));
+        }
+        System.out.println(Arrays.deepToString(auth.toArray()));
+        return auth;
     }
 
     @Override

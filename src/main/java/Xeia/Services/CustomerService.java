@@ -1,12 +1,16 @@
 package Xeia.Services;
 
 import Xeia.Customer.Customer;
+import Xeia.Customer.Role;
 import Xeia.Data.CustomerRepository;
 import Xeia.Data.ItemRepository;
+import Xeia.Data.RoleRepository;
 import Xeia.Items.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +22,9 @@ public class CustomerService {
 
     CustomerRepository custRepo;
     ItemRepository itemRepo;
+
+    @Autowired
+    RoleRepository roleRepository;
     @Autowired
     public CustomerService(CustomerRepository custRepo, ItemRepository itemRepo) {
         this.custRepo = custRepo;
@@ -75,6 +82,12 @@ public class CustomerService {
         custRepo.updateCart(c);
         custRepo.updateInventory(c);
         custRepo.updateFund(c);
+
+    }
+    public void registerCustomer(Customer c) throws NoSuchAlgorithmException {
+        custRepo.signUpCustomer(c);
+        Role userRole = roleRepository.getRoleByName("USER");
+        roleRepository.giveCustomerRole(c, Arrays.asList(userRole));
 
     }
 }
