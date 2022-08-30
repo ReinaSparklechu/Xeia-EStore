@@ -101,7 +101,6 @@ public class JdbcCustomerRepository implements CustomerRepository {
                         , passwordHash, newCustomer.getAuthorities().stream().toList().get(0),newCustomer.getFunds()));
         KeyHolder kh = new GeneratedKeyHolder();
         jdbc.update(psc,kh);
-        jdbc.update("update Customer set userId = " + kh.getKey().longValue() + " where username = \'" + newCustomer.getUsername() + "\' and userId = null");
         newCustomer.setUserId(kh.getKey().longValue());
     }
     private Customer mapRowToCustomer(ResultSet rs, int rowNum)throws SQLException {

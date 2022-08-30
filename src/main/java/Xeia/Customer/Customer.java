@@ -19,14 +19,11 @@ import java.util.*;
 @NoArgsConstructor
 
 public class Customer implements UserDetails {
-    @NonNull
-    @NotBlank
-    @Pattern(regexp = "^[0-9a-zA-Z_]{9,32}", message = "Username must be at least 9 characters long, max of 32 characters")
+
     private String username;
-    @NonNull
-    @NotBlank
-    @Pattern(regexp = "^[0-9a-zA-Z_]{9,32}", message ="password must be at least 9 characters long, max of 32 characters" )
+
     private String password;
+
     private Map<Item, Integer> inventory = new HashMap<>();
     private Map<Item, Integer> shoppingCart = new TreeMap<>(Comparator.comparing(Item::getName));
     private  Map<String, Integer> cartBuffer = new HashMap<>();

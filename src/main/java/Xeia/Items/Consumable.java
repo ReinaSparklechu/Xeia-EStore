@@ -1,12 +1,14 @@
 package Xeia.Items;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @RequiredArgsConstructor
 @Data
 @AllArgsConstructor
+
 public class Consumable extends Item{
     private int quality;
     private String effect;

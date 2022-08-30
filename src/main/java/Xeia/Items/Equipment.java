@@ -1,8 +1,9 @@
 package Xeia.Items;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Data
 @RequiredArgsConstructor
