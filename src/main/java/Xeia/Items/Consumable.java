@@ -2,8 +2,6 @@ package Xeia.Items;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @RequiredArgsConstructor
 @Data

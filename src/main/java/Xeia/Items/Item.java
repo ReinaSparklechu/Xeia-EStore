@@ -2,7 +2,6 @@ package Xeia.Items;
 
 import lombok.*;
 
-import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 

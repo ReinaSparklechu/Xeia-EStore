@@ -48,6 +48,13 @@ public class loginController {
         model.addAttribute("customer", customer);
         return "login";
     }
+    @GetMapping("process")
+    public String process(Model model, HttpServletResponse response, HttpServletRequest request) {
+        System.out.println("In process");
+        Customer customer = customerRepo.findCustomer((String) request.getSession().getAttribute("custName"));
+        model.addAttribute("customer", customer);
+        return "redirect:/store";
+    }
 
     //todo bind error messages and return it to user
     @PostMapping

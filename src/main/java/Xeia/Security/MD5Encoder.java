@@ -1,6 +1,5 @@
 package Xeia.Security;
 
-import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigInteger;
@@ -29,7 +28,9 @@ public class MD5Encoder implements PasswordEncoder {
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return encode(rawPassword) == encodedPassword;
+        System.out.println(rawPassword.toString() + encodedPassword.toString());
+        System.out.println(encode(rawPassword).equals(encodedPassword));
+        return encode(rawPassword).equals(encodedPassword);
     }
     private String convertToHex(final byte[] messageDigest) {
         BigInteger bigint = new BigInteger(1, messageDigest);
