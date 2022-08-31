@@ -1,0 +1,96 @@
+* {
+    color: black;
+    background-color: #DDBEA9;
+    font-family: "Comic Sans MS";
+
+}
+
+header {
+    font-size: 5vh;
+    width: available;
+    height: fit-content;
+    align-content: center;
+    text-align: center;
+    justify-content: space-evenly;
+    border: #6B705C solid thick;
+    border-radius: 2vh;
+    background: #B7B7A4;
+    margin-bottom: 5vh;
+}
+.main2 {
+    display: flex;
+    align-content: stretch;
+    justify-content: space-between;
+
+}
+header nav {
+    border-top: #A5A58D solid medium;
+    background: inherit;
+    justify-content: space-evenly;
+    display: flex;
+}
+header nav span  {
+    background: inherit;
+    width: 33%;
+    border-left: #A5A58D solid medium;
+    border-right: #A5A58D solid medium;
+}
+header nav span a  {
+    background: inherit;
+    flex: available;
+    alignment: center;
+}
+header nav span form {
+    padding: 0;
+    margin: 0;
+}
+head nav span form button {
+    padding: 0;
+    margin: 0;
+}
+header nav span:hover {
+    animation-name: pulse;
+    animation-duration: 0.5s;
+    animation-fill-mode: backwards;
+    animation-direction: alternate;
+    animation-timing-function: ease-out;
+    animation-play-state: running;
+    animation-iteration-count: initial;
+}
+@keyframes pulse {
+    0%{
+
+    }
+    50% {
+        background-color: #FFE8D6;
+        text-shadow: #6B705C;
+        color: #A5A58D;
+    }
+    100%{
+
+    }
+
+}
+p {
+    max-width: 30%;
+    font-size: 2vh;
+    height: 50%;
+    border: #6B705C thick solid;
+    padding: 2vh;
+    background-color: #DDBEA9;
+    border-top-right-radius: 4vh;
+    border-bottom-left-radius: 4vh;
+    margin:0;
+    margin-right: 5vh;
+    margin-bottom: 5vh;
+    align-self: start;
+}
+.CustTracker {
+    border-radius: 5px;
+    border: brown;
+    border-width: 2px;
+    height: content-box;
+    margin-right: 2vh;
+    width: fit-content;
+    outline-style: dashed;
+}

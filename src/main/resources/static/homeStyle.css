@@ -1,16 +1,41 @@
 * {
     color: black;
-    background-color: antiquewhite;
+    background-color: #DDBEA9;
     font-family: "Comic Sans MS";
 
-
-
 }
-/*todo style pages properly*/
-div {
-    flex-direction: column;
-    align-items: stretch;
+
+header {
+    font-size: 5vh;
+    width: available;
+    height: fit-content;
+    justify-content: space-evenly;
+    border: #6B705C solid thick;
+    border-radius: 2vh;
+    background: #B7B7A4;
+    margin-bottom: 5vh;
 }
+
+header div nav {
+    background: #B7B7A4;
+    flex-direction: row;
+    align-content: center;
+    justify-items: center;
+    width: available;
+}
+header div nav span {
+    background: inherit;
+    flex: available;
+    min-width: 33%;
+    alignment: center;
+}
+header div nav span :hover {
+    animation-duration: 1s;
+    animation-name: pulse;
+    animation-timing-function: ease-in-out;
+    animation-play-state: paused;
+}
+
 .CustTracker {
     border-radius: 5px;
     border: brown;

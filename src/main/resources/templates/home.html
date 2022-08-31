@@ -6,37 +6,54 @@
     <meta charset="UTF-8">
     <title>Xeia Home Page</title>
     <link rel="stylesheet" th:href="@{/homeStyle.css}" type = "text/css">
+    <link rel="stylesheet" href="homeStyle.css" type = "text/css">
 </head>
 <body>
-<div>
-    <span>Welcome to Xeia!</span>
-    <div th:object="${customer}" class = "CustTracker">
-        <label for="username">Username: </label>
-        <div th:text=" *{username}" id = "username"></div>
-        <br/>
+<div class="main">
+    <header>Welcome to Xeia E-Store!
+            <nav>
+                <span><a href="/store">store</a></span>
+                <span><a href="/login">login</a></span>
+                <span><a href="/signup">signup</a></span>
+                <span><form th:object="${customer}" th:action="@{/logout}" th:method="post">
+<button type="submit">Logout</button>
+</form></span>
+            </nav>
+    </header>
+    <div class ="main2">
+        <p>Ever wanted to get your adventuring items, however slaying monsters have you too tired to go to the market?
+            At Xeia's E-Store, We help out our busy adventures by allowing them to purchase all their adventuring needs
+            from the comfort of their homes.
+            Simply add register with our store, add your items to your cart and checkout!
+            <br>
+            The items will then be delivered to you before your next adventure.
+            Xeia's E-Store, Buy today, Adventure tomorrow
+        </p>
+        <div th:fragment="custTracker" th:object="${customer}" class = "CustTracker">
+            <label for="username">Username: </label>
+            <div th:text=" *{username}" id = "username"></div>
+            <br/>
 
-        <label for="inventory Size">Inventory size:</label>
-        <div th:text="*{getInventory().keySet().size()}" id = "inventory size"></div>
-        <br/>
+            <label for="inventory Size">Inventory size:</label>
+            <div th:text="*{getInventory().keySet().size()}" id = "inventory size"></div>
+            <br/>
 
-        <label for="Cart size">Items in cart: </label>
-        <div th:text="*{getShoppingCart().size()}" id = "Cart size"></div>
-        <br>
+            <label for="Cart size">Items in cart: </label>
+            <div th:text="*{getShoppingCart().size()}" id = "Cart size"></div>
+            <br>
 
-        <label for = "Funds">Funds: </label>
-        <div th:text = "*{funds}" id = "funds"></div>
-        <label for="Cart">Cart Items</label>
-        <select name="Cart">
-            <option th:each = "item: ${customer.getShoppingCart()}" th:text="${item.getKey()} +' ' + ${item.getValue()}"></option>
-        </select>
+            <label for = "Funds">Funds: </label>
+            <div th:text = "*{funds}" id = "funds"></div>
+            <label for="Cart">Cart Items</label>
+            <select name="Cart">
+                <option th:each = "item: ${customer.getShoppingCart()}" th:text="${item.getKey()} +' ' + ${item.getValue()}"></option>
+            </select>
+        </div>
     </div>
+
+
 </div>
 
-<div><a href="/store">store</a></div>
-<div><a href="/login">login</a></div>
-<div><a href="/signup">signup</a> </div>
-<form th:object="${customer}" th:action="@{/logout}" th:method="post">
-<button type="submit">Logout</button>
-</form>
+
 </body>
 </html>
