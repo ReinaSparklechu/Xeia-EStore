@@ -17,7 +17,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequestMapping("/store")
 @SessionAttributes("customer")
 public class StoreController {
-    // TODO: 20/8/2022 sort store page listings so that items should be displayed by alphabetical order 
 
     ItemRepository itemRepository;
 
@@ -71,7 +70,9 @@ public class StoreController {
             //add to cost
             totalCost.set(cartItem.getPrice() * cartQuantity.intValue() + totalCost.get());
         });
-        //todo dont allow for checkout if customer not enough funds
+        if(customer.getFunds()< totalCost.intValue()) {
+            return "redirect:/store";
+        }
         customerService.checkoutCart(customer);
         //deduct funds and update cust object
         int cost = totalCost.get();

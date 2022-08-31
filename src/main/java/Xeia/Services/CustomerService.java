@@ -51,7 +51,7 @@ public class CustomerService {
                 invBuffer.put(pair.getKey(), pair.getValue());
             }
             String owner = pair.getKey().getOwner();
-            //todo
+
             //query the whole mapping from item owner
             int ownerQuantity = itemRepo.getEntryQuantityById(owner, pair.getKey());
             int cartQuantity = cartBuffer.get(pair.getKey());
@@ -88,6 +88,11 @@ public class CustomerService {
         custRepo.signUpCustomer(c);
         Role userRole = roleRepository.getRoleByName("USER");
         roleRepository.giveCustomerRole(c, Arrays.asList(userRole));
+
+    }
+    public void loginCustomer(Customer c) {
+        //todo: update so that all details go through serivce
+        c.setInventory(custRepo.getCustomerInventoryById(c.getUserId()));
 
     }
 }

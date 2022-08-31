@@ -2,6 +2,8 @@ package Xeia.Data;
 
 import Xeia.Customer.Customer;
 import Xeia.Customer.Role;
+import Xeia.Items.Consumable;
+import Xeia.Items.Equipment;
 import Xeia.Items.Item;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -74,10 +77,33 @@ public class JdbcCustomerRepository implements CustomerRepository {
         }
         throw new UsernameNotFoundException("User :" + username + " not found");
     }
-
+    //todo: implement
     @Override
     public Map<Item, Integer> getCustomerInventoryById(long custId) {
-        return null;
+        List<Map.Entry<Item, Integer>> inventory = new ArrayList<>();
+        Map<Item,Integer> invMap = new TreeMap<>(Comparator.comparing(Item::getName));
+        inventory = jdbc.query("select i.name, i.price, i.quality, i.effect, i.isConsumable, i.isEquipment,i.itemLvl, i.isEnchantable, i.enchantment,s.quantity from Items i, Item_Owner s where s.cust_id = ? and i.name = s.item_name",
+                (rs, rowNum) -> {
+                    if(rs.getBoolean("isConsumable")) {
+                        return Map.entry(
+                                new Consumable(rs.getString("name"), rs.getInt("price"), rs.getInt("quality"), rs.getString("effect"))
+                                , rs.getInt("quantity"));
+                    } else if(rs.getBoolean("isEquipment")) {
+                        return Map.entry( new Equipment(rs.getString("name"), rs.getInt("price"), rs.getInt("itemLvl"), rs.getBoolean("isEnchantable"), rs.getString("enchantment")),
+                                rs.getInt("quantity"));
+                    } else {
+                        return null;
+                    }
+
+        },custId);
+        for(Map.Entry e : inventory) {
+            var i = (Item) e.getKey();
+            var q = (Integer) e.getValue();
+            i.setOwner(String.valueOf(custId));
+            invMap.put(i,q);
+
+        }
+        return invMap;
     }
 
     private String convertToHex(final byte[] messageDigest) {

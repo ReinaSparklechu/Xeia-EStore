@@ -3,6 +3,7 @@ package Xeia.Web;
 import Xeia.Customer.Customer;
 import Xeia.Data.CustomerRepository;
 import Xeia.Data.JdbcCustomerRepository;
+import Xeia.Services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,6 +31,8 @@ public class loginController {
 
     @Autowired
     CustomerRepository customerRepo;
+    @Autowired
+    CustomerService customerService;
     private String convertToHex(final byte[] messageDigest) {
         BigInteger bigint = new BigInteger(1, messageDigest);
         String hexText = bigint.toString(16);
@@ -56,6 +59,8 @@ public class loginController {
     public String process(Model model, HttpServletResponse response, HttpServletRequest request) {
         System.out.println("In process");
         Customer customer = customerRepo.findCustomer((String) request.getSession().getAttribute("custName"));
+        customerService.loginCustomer(customer);
+        System.out.println(customer);
         model.addAttribute("customer", customer);
         return "redirect:/store";
     }
