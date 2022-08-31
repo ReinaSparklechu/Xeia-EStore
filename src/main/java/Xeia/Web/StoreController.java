@@ -87,6 +87,7 @@ public class StoreController {
     public String addtoCart(Model model, @ModelAttribute("customer")Customer customer) {
         Map<Item, Integer> inventory = itemRepository.loadInventory(customer.getLastVisited());
         customer.consolidateCart(inventory);
+        customerService.updateCustomer(customer);
         model.addAttribute("customer", customer);
         return "redirect:/store";
     }

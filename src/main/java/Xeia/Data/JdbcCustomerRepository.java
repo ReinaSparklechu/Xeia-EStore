@@ -82,6 +82,7 @@ public class JdbcCustomerRepository implements CustomerRepository {
     public Map<Item, Integer> getCustomerInventoryById(long custId) {
         List<Map.Entry<Item, Integer>> inventory = new ArrayList<>();
         Map<Item,Integer> invMap = new TreeMap<>(Comparator.comparing(Item::getName));
+        // query whole table plus quantity and construct item based on bias colum
         inventory = jdbc.query("select i.name, i.price, i.quality, i.effect, i.isConsumable, i.isEquipment,i.itemLvl, i.isEnchantable, i.enchantment,s.quantity from Items i, Item_Owner s where s.cust_id = ? and i.name = s.item_name",
                 (rs, rowNum) -> {
                     if(rs.getBoolean("isConsumable")) {
@@ -104,6 +105,19 @@ public class JdbcCustomerRepository implements CustomerRepository {
 
         }
         return invMap;
+    }
+
+    @Override
+    public Map<Item, Integer> getCustomerShoppingCartById(long userId) {
+        List<Map.Entry<Item,Integer>> cart = new ArrayList<>();
+        cart = jdbc.query("select i.name, c.quantity, i.price , o.Store_id from customer_cart c, items i, item_owner o where c.userid = ? and c.item_name = i.name and c.item_name = o.item_name",(rs, rowNum) -> {
+            return Map.entry(new Item(rs.getString("name"),rs.getInt("price"), rs.getString("store_id")), rs.getInt("quantity"));
+        }, userId);
+        Map<Item, Integer> rCart = new TreeMap<>(Comparator.comparing(Item::getName));
+        for(Map.Entry e: cart) {
+            rCart.put((Item) e.getKey(), (Integer) e.getValue());
+        }
+        return rCart;
     }
 
     private String convertToHex(final byte[] messageDigest) {

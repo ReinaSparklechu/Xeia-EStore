@@ -30,6 +30,7 @@ public class CustomerService {
         this.custRepo = custRepo;
         this.itemRepo = itemRepo;
     }
+
     public void checkoutCart(Customer c) {
         Map<Item, Integer> cartBuffer = c.getShoppingCart();
         Map<Item, Integer> invBuffer = c.getInventory();
@@ -79,6 +80,7 @@ public class CustomerService {
     }
 
     public void updateCustomer(Customer c) {
+        System.out.println("Updating customer: " + c);
         custRepo.updateCart(c);
         custRepo.updateInventory(c);
         custRepo.updateFund(c);
@@ -93,6 +95,7 @@ public class CustomerService {
     public void loginCustomer(Customer c) {
         //todo: update so that all details go through serivce
         c.setInventory(custRepo.getCustomerInventoryById(c.getUserId()));
+        c.setShoppingCart(custRepo.getCustomerShoppingCartById(c.getUserId()));
 
     }
 }

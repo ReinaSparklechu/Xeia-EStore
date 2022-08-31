@@ -19,4 +19,6 @@ public interface CustomerRepository {
     Customer findCustomer(String username);
 
     Map<Item, Integer> getCustomerInventoryById(long custId);
+
+    Map<Item, Integer> getCustomerShoppingCartById(long userId);
 }

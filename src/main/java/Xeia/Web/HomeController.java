@@ -2,6 +2,7 @@ package Xeia.Web;
 
 import Xeia.Customer.Customer;
 import Xeia.Services.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.support.SessionStatus;
 @SessionAttributes("customer")
 public class HomeController {
 
+    @Autowired
     CustomerService customerService;
     @ModelAttribute("customer")
     public Customer customer() {
@@ -36,6 +38,16 @@ public class HomeController {
         session.setComplete();
         return "redirect:/";
 
+
+    }
+    @GetMapping("/logout/process")
+    public String process(Model model, @ModelAttribute("customer") Customer customer, SessionStatus session){
+
+        customer = new Customer();
+        customer.setUsername("Guest");
+        model.addAttribute("customer", customer);
+        session.setComplete();
+        return"redirect:/";
 
     }
     @GetMapping("cart")

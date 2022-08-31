@@ -72,7 +72,7 @@ public class loginController {
     }
 
 
-   //todo bind error messages and return it to user
+   //old authenticate mapping
     @PostMapping
     public String authenticate(Model model, @AuthenticationPrincipal Customer customer, BindingResult result, HttpServletResponse response) throws NoSuchAlgorithmException{
         System.out.println("Authenticating getting pass");

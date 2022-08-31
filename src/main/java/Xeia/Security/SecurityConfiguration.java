@@ -2,6 +2,7 @@ package Xeia.Security;
 
 import Xeia.Customer.Customer;
 import Xeia.Data.CustomerRepository;
+import Xeia.Services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -22,22 +23,24 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
-    //TODO: configure web security
 
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    CustomerService customerService;
     @Autowired
     DataSource dataSource;
 
@@ -66,11 +69,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .formLogin().loginPage("/login").loginProcessingUrl("/login").defaultSuccessUrl("/store").permitAll().successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-
-                        System.out.println(authentication.getDetails());
-                        System.out.println(authentication.getCredentials());
-                        System.out.println(authentication.getName());
-                        System.out.println(authentication.getPrincipal());
                         request.getSession().setAttribute("custName", authentication.getName());
                         response.sendRedirect("/login/process");
                     }
@@ -81,7 +79,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                     }
                 })
                 .and()
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID")
+                .logout().logoutUrl("/logout").logoutSuccessHandler(new LogoutSuccessHandler() {
+                    @Override
+                    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                        response.sendRedirect("/logout/process");
+                    }
+                })
                 .and()
                 .csrf().disable().headers().frameOptions().disable()
                 ;

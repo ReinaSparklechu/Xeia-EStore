@@ -12,6 +12,13 @@ public class Item {
     private String name;
     private int price;
     private String owner;
+
+    public Item(String name, int price, String owner) {
+        this.name= name;
+        this.price = price;
+        this.owner = owner;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(getName());
