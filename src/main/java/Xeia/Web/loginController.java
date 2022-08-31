@@ -4,6 +4,7 @@ import Xeia.Customer.Customer;
 import Xeia.Data.CustomerRepository;
 import Xeia.Data.JdbcCustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.auth.login.AccountException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -46,8 +48,10 @@ public class loginController {
     public String login(Model model, @ModelAttribute("customer")Customer customer)
     {
         model.addAttribute("customer", customer);
+        model.addAttribute("formError", false);
         return "login";
     }
+
     @GetMapping("process")
     public String process(Model model, HttpServletResponse response, HttpServletRequest request) {
         System.out.println("In process");
@@ -55,8 +59,15 @@ public class loginController {
         model.addAttribute("customer", customer);
         return "redirect:/store";
     }
+    @GetMapping("failure")
+    public String failure(Model model, HttpServletRequest request, HttpServletResponse response) throws IOException  {
+        System.out.println("Has Error");
+        model.addAttribute("formError" , true);
+        return"login";
+    }
 
-    //todo bind error messages and return it to user
+
+   //todo bind error messages and return it to user
     @PostMapping
     public String authenticate(Model model, @AuthenticationPrincipal Customer customer, BindingResult result, HttpServletResponse response) throws NoSuchAlgorithmException{
         System.out.println("Authenticating getting pass");

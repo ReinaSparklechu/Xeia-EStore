@@ -9,8 +9,8 @@
 </head>
 <body>
 
-<form th:object="${customer}" method="post" >
-<p th:if="${#fields.hasErrors('global')}" th:each="err: ${#fields.errors()}" th:text="${err}" class="ui-state-error-text"></p>
+<form th:object="${customer}" method="post" th:action="@{/login}" >
+<p th:if="${formError.equals(true)}" class="error">The Password or username you entered was incorrect</p>
 
 
 
