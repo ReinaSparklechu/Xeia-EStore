@@ -26,13 +26,13 @@ public class StoreController {
     StoreController(ItemRepository itemRepository, CustomerService customerService){
         this.itemRepository = itemRepository;
         this.customerService = customerService;
-        Equipment equipment = new Equipment();
     }
 
     @GetMapping
     public String store(@ModelAttribute("customer") Customer customer) {
         return "store";
     }
+
     @GetMapping("/smithy")
     public String smithy(Model model, @ModelAttribute("customer")Customer customer){
         Map<Item, Integer> inventory = itemRepository.loadInventory("smithy");

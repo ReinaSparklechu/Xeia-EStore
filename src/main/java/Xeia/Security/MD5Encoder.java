@@ -10,12 +10,7 @@ import java.security.NoSuchAlgorithmException;
 public class MD5Encoder implements PasswordEncoder {
     @Override
     public String encode(CharSequence rawPassword) {
-        System.out.println("MD5 Enconder encoding " + rawPassword.toString());
-        try {
-            System.out.println(convertToHex(MessageDigest.getInstance("MD5").digest(rawPassword.toString().getBytes(StandardCharsets.UTF_8))));
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+
         try {
             return convertToHex(MessageDigest.getInstance("MD5").digest(rawPassword.toString().getBytes(StandardCharsets.UTF_8)));
         } catch (NoSuchAlgorithmException e) {
@@ -28,8 +23,6 @@ public class MD5Encoder implements PasswordEncoder {
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        System.out.println(rawPassword.toString() + encodedPassword.toString());
-        System.out.println(encode(rawPassword).equals(encodedPassword));
         return encode(rawPassword).equals(encodedPassword);
     }
     private String convertToHex(final byte[] messageDigest) {

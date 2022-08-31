@@ -70,7 +70,29 @@ public class Customer implements UserDetails {
         }
         this.shoppingCart = sorted;
     }
+    public void updateCart() {
+        var buffer = this.getCartBuffer();
+        var cart = this.getShoppingCart();
+        // O(n^2) algorithm
+        for(String s : buffer.keySet()) {
+            for(Item i: cart.keySet().stream().toList()) {
+                if(i.getName().equals(s)) {
 
+                    if(buffer.get(s) == null) {
+                        break;
+                    } else if (buffer.get(s) == 0) {
+                        cart.remove(i);
+                    } else {
+                        cart.replace(i,buffer.get(s));
+                        System.out.println("replacing to: " + buffer.get(s));
+                    }
+
+                }
+            }
+        }
+        this.setCartBuffer(new HashMap<>());
+        this.setShoppingCart(cart);
+    }
     //method to add item into cart, if item exists, increment by 1 else, enter new entry.
     public void addToCart(Item i, int j) {
         List<Item> keylist = shoppingCart.keySet().stream().toList();

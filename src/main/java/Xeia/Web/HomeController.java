@@ -50,11 +50,7 @@ public class HomeController {
         return"redirect:/";
 
     }
-    @GetMapping("cart")
-    public String viewCart(Model model, @ModelAttribute("customer") Customer customer){
-        model.addAttribute("customer", customer);
-        return "viewCart";
-    }
+
 
 
 

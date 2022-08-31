@@ -9,6 +9,7 @@
 </head>
 
 <h1>Your cart contains</h1>
+<form  th:method="post" th:action="@{/cart/update}">
   <table>
     <tr>
       <th>Quantity</th>
@@ -16,9 +17,13 @@
       <th>Price</th>
     </tr>
     <tr th:each="item: ${customer.getShoppingCart()}">
-      <td th:text = "${item.getValue()}"></td>
+      <td>
+        <input type="number" th:placeholder="${item.getValue()}"  th:min = "0" th:max = "${item.getValue()}"  th:field="${customer.cartBuffer[__${item.getKey().name}__]}">
+      </td>
       <td th:text="${item.getKey().getName()}"></td>
       <td th:text = "${item.getKey().getPrice()}"></td>
     </tr>
   </table>
+  <button type="submit">Update Cart</button>
+</form>
 </html>
