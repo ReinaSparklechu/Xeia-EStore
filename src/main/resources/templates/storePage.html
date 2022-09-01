@@ -5,43 +5,42 @@
 <head>
     <meta charset="UTF-8">
     <title>StorePage</title>
-    <link rel="stylesheet" th:href="@{/storeStyle.css}" type = "text/css">
+    <link rel="stylesheet" th:href="@{/homeStyle.css}" type = "text/css">
 </head>
 <body>
-<div th:object="${customer}" class = "CustTracker">
-    <label for="username">Username: </label>
-    <div th:text=" *{username}" id = "username"></div>
-    <br/>
+<div class="main">
+    <div th:insert="~{home::headMenu}"></div>
+    <div class = main2>
+        <div class="itemTable">
+            <h1 th:text="${storeName}">defaultHolder</h1>
+            <form method="post" th:action = "@{/store}">
+                <input type="hidden" th:object="${customer}"  th:field="*{lastVisited}" th:value="${storeName}">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Select Qty.</th>
+                    </tr>
+                    <tr th:each="item: ${#lists.toList(inventory.keySet())}" th:class="'tr'+__${#lists.toList(inventory.keySet()).indexOf(item)%2}__">
+                        <td th:text="${item.getName()}" ></td>
+                        <td th:text = "${item.getPrice()}"></td>
+                        <td th:text = "${inventory.get(item)}">quantity</td>
+                        <td>
+                            <input type="number"  min="0" th:max ="${inventory.get(item)}" th:field = " ${customer.cartBuffer[__${item.name}__]}" >
+                        </td>
+                    </tr>
+                </table>
+                <button type="submit">add to cart</button>
+            </form>
+        </div>
 
-    <label for="inventory Size">Inventory size:</label>
-    <div th:text="*{getInventory().keySet().size()}" id = "inventory size"></div>
-    <br/>
 
-    <label for="Cart size">Items in cart: </label>
-    <div th:text="*{getShoppingCart().size()}" id = "Cart size"></div>
-    <br>
+        <div th:insert="~{home::custTracker}"></div>
+
+    </div>
 </div>
-<h1 th:text="${storeName}">defaultHolder</h1>
-<form method="post" th:action = "@{/store}">
-    <input type="hidden" th:object="${customer}"  th:field="*{lastVisited}" th:value="${storeName}">
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Select Qty.</th>
-        </tr>
-<tr th:each="item: ${#lists.toList(inventory.keySet())}" th:class="'tr'+__${#lists.toList(inventory.keySet()).indexOf(item)%2}__">
-    <td th:text="${item.getName()}" ></td>
-    <td th:text = "${item.getPrice()}"></td>
-    <td th:text = "${inventory.get(item)}">quantity</td>
-    <td>
-    <input type="number"  min="0" th:max ="${inventory.get(item)}" th:field = " ${customer.cartBuffer[__${item.name}__]}" >
-    </td>
-</tr>
-    </table>
-    <button type="submit">add to cart</button>
-</form>
+
 
 </body>
 </html>
