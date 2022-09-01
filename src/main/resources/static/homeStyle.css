@@ -155,31 +155,42 @@ option::selection{
     border: #6B705C solid thick;
     border-radius: 2vh;
     max-width: 30%;
-    max-height: 15%;
+    max-height: 10%;
     overflow: clip;
     font-size: medium;
-    background-color: #ffe2cc;
+    background: linear-gradient(180deg, #ffe2cc 80%, grey);
+
 
 }
-p.desc:hover{
-    animation: increase;
-    animation-duration: 1s;
-    animation-fill-mode: both;
+.desc:hover{
+    animation-name: increase;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+    animation-direction: normal;
+    animation-timing-function: ease-in-out;
 }
-@keyframes hover {
+@keyframes increase {
     from {
-        width: 50%;
-        height: 50%;
+        max-width: 30%;
+        background: linear-gradient(180deg, #ffe2cc 80%, grey);
+        max-height: 10%;
     }
     to {
-
+        max-width: 50%;
+        max-height: 20%;
+        background: linear-gradient(180deg, #ffe2cc 100%, white 0%);
     }
 
 }
+
 .desc > * {
     background-color: inherit;
 }
 .storeContent a {
     font-size: 4vh;
 
+}
+.storeContent {
+    height: 60vh;
 }
