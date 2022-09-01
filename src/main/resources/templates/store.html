@@ -5,42 +5,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Xeia Store Page</title>
-    <link rel="stylesheet" th:href="@{/storeStyle.css}" type = "text/css">
+    <link rel="stylesheet" th:href="@{/homeStyle.css}" type = "text/css">
 </head>
 <body>
-<h1>Store Navigation Page</h1>
-<div th:object="${customer}" class = "CustTracker">
-    <label for="username">Username: </label>
-    <div th:text=" *{username}" id = "username"></div>
+    <div class ="main">
+        <div th:insert="~{home::headMenu}"></div>
+        <div class = "main2">
+            <div class="storeContent">
+                <p class="desc">
+                    <a href="/store/smithy">Smith</a>
+                    <br>
+                    Our smiths work hard to bring the best quality weapons and armor for busy adventurers <br>
+                    Using the best materials gather by you hardworking adventurers, our master
+                    craftsmen are able to produce high quality gear for your next expedition
+                </p>
+                <p class="desc">
+                    <a href="/store/apothecary">Apothecary</a>
+                    <br>
+                    Our apothecaries employ the top of the line ingredients, from herbs gathered from mountain tops and
+                    drops from elite monsters. With these ingredients, our products are sure to
+                    help you get through any adventures
+                </p>
+                <p class="desc">
+                    <a href="/store/tailor">Tailor</a>
+                    <br>
+                    The tailors here have access to the toughest hides gathered from mountain bears
+                    and tough boars. They meticulously sew together pieces that allow our mobility loving
+                    friends easy movements while offering ample protection from whatever danger they might face.
 
-    <label for="inventory Size">Inventory size:</label>
-    <div th:text="*{getInventory().keySet().size()}" id = "inventory size"></div>
+                </p>
 
-    <label for="Cart size">Items in cart: </label>
-    <div th:text="*{getShoppingCart().size()}" id = "Cart size"></div>
-    <label for="Cart">Cart Items</label>
-    <select name="Cart">
-        <option th:each = "item: ${customer.getShoppingCart()}" th:text="${item.getKey().getName()} +' Qty: ' + ${item.getValue()}"></option>
-    </select>
-</div>
-<div>
+                <br>
 
-    <div>
-        <a href="/store/smithy">Smith</a>
-        <br>
-        <a href="/store/apothecary">Apothecary</a>
-        <br>
-        <a href="/store/tailor">Tailor</a>
-        <br>
+                <br>
+
+            </div>
+            <div th:insert="~{home::custTracker}"></div>
+
+        </div>
         <a href="/cart">View Cart</a>
+        <form th:action="@{/store/checkout}" method="post">
+            <button type="submit" >Checkout</button>
+        </form>
+
     </div>
-    <form th:action="@{/store/checkout}" method="post">
-        <button type="submit" >Checkout</button>
-    </form>
-
-
-
-</div>
-
 </body>
 </html>

@@ -27,6 +27,12 @@ public class StoreController {
         this.itemRepository = itemRepository;
         this.customerService = customerService;
     }
+    @ModelAttribute("customer")
+    public Customer customer() {
+        Customer guest = new Customer();
+        guest.setUsername("guest");
+        return guest;
+    }
 
     @GetMapping
     public String store(@ModelAttribute("customer") Customer customer) {

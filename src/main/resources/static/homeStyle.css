@@ -32,6 +32,8 @@ main {
     display: flex;
     align-content: stretch;
     justify-content: space-between;
+    max-height: 80%;
+    min-height: 80%;
 
 }
 
@@ -78,13 +80,13 @@ header nav span:hover {
     }
 
 }
-p {
+p{
     max-width: 30%;
     font-size: 2vh;
     height: 50%;
     border: #6B705C thick solid;
     padding: 2vh;
-    background-color: #DDBEA9;
+    background-color: #ffe2cc;
     border-top-right-radius: 4vh;
     border-bottom-left-radius: 4vh;
     margin:0;
@@ -148,4 +150,36 @@ select::selection {
 option::selection{
     color: transparent;
     background: transparent;
+}
+.desc{
+    border: #6B705C solid thick;
+    border-radius: 2vh;
+    max-width: 30%;
+    max-height: 15%;
+    overflow: clip;
+    font-size: medium;
+    background-color: #ffe2cc;
+
+}
+p.desc:hover{
+    animation: increase;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+@keyframes hover {
+    from {
+        width: 50%;
+        height: 50%;
+    }
+    to {
+
+    }
+
+}
+.desc > * {
+    background-color: inherit;
+}
+.storeContent a {
+    font-size: 4vh;
+
 }

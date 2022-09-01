@@ -46,6 +46,7 @@ header nav span  {
     width: 33%;
     border-left: #A5A58D solid medium;
     border-right: #A5A58D solid medium;
+    padding: 2vh;
 }
 header nav span a  {
     background: inherit;
@@ -53,14 +54,7 @@ header nav span a  {
     alignment: center;
     color: inherit;
 }
-header nav span form {
-    padding: 0;
-    margin: 0;
-}
-head nav span form button {
-    padding: 0;
-    margin: 0;
-}
+
 header nav span:hover {
     animation-name: pulse;
     animation-duration: 0.5s;
@@ -116,7 +110,6 @@ p {
 
 button {
     border-radius: 2vh;
-    margin-top: 40vh;
     background-color: #6B705C;
     color: #DDBEA9;
     border: #6B705C thick solid;
@@ -133,6 +126,7 @@ button:hover {
     animation-timing-function: ease-out;
     animation-play-state: running;
     animation-iteration-count: initial;
+    cursor: pointer;
 }
 select{
     border: #6B705C 1px solid ;
@@ -156,3 +150,4 @@ option::selection{
     color: transparent;
     background: transparent;
 }
+
