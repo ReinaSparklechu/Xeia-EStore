@@ -10,14 +10,14 @@
 </head>
 <body>
 <div class="main">
-    <header>Welcome to Xeia E-Store!
+    <header th:fragment="headMenu">Welcome to Xeia E-Store!
             <nav>
-                <span><a href="/store">store</a></span>
-                <span><a href="/login">login</a></span>
-                <span><a href="/signup">signup</a></span>
-                <span><form th:object="${customer}" th:action="@{/logout}" th:method="post">
-<button type="submit">Logout</button>
-</form></span>
+                <span><a href="/">Home</a></span>
+                <span><a href="/store">Store</a></span>
+                <span><a href="/login">Login</a></span>
+                <span><a href="/signup">Sign-Up</a></span>
+
+
             </nav>
     </header>
     <div class ="main2">
@@ -44,13 +44,18 @@
 
             <label for = "Funds">Funds: </label>
             <div th:text = "*{funds}" id = "funds"></div>
+            <br>
             <label for="Cart">Cart Items</label>
+            <br>
             <select name="Cart">
-                <option th:each = "item: ${customer.getShoppingCart()}" th:text="${item.getKey()} +' ' + ${item.getValue()}"></option>
+                <option th:each = "item: ${customer.getShoppingCart()}" th:text="${item.getKey().name} +' Qty: ' + ${item.getValue()}"></option>
             </select>
         </div>
     </div>
 
+    <form th:object="${customer}" th:action="@{/logout}" th:method="post">
+        <button type="submit">Logout</button>
+    </form>
 
 </div>
 

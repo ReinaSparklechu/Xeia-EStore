@@ -2,7 +2,11 @@
     color: black;
     background-color: #DDBEA9;
     font-family: "Comic Sans MS";
+    margin-right: 0;
 
+}
+body{
+    height: 95vh;
 }
 
 header {
@@ -16,6 +20,13 @@ header {
     border-radius: 2vh;
     background: #B7B7A4;
     margin-bottom: 5vh;
+    margin: 2vh;
+}
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height:80vh;
 }
 .main2 {
     display: flex;
@@ -23,6 +34,7 @@ header {
     justify-content: space-between;
 
 }
+
 header nav {
     border-top: #A5A58D solid medium;
     background: inherit;
@@ -39,6 +51,7 @@ header nav span a  {
     background: inherit;
     flex: available;
     alignment: center;
+    color: inherit;
 }
 header nav span form {
     padding: 0;
@@ -86,11 +99,60 @@ p {
     align-self: start;
 }
 .CustTracker {
-    border-radius: 5px;
-    border: brown;
-    border-width: 2px;
+    border-radius: 2vh;
+    border: #FFE8D6 solid thick;
+    background-color: #FFE8D6;
+    padding: 1vh;
     height: content-box;
-    margin-right: 2vh;
     width: fit-content;
-    outline-style: dashed;
+    display: flex;
+    flex-direction: column;
+    border-top-right-radius: 0vh;
+    border-bottom-right-radius: 0vh;
+}
+.CustTracker >* {
+    background-color: inherit;
+}
+
+button {
+    border-radius: 2vh;
+    margin-top: 40vh;
+    background-color: #6B705C;
+    color: #DDBEA9;
+    border: #6B705C thick solid;
+    font-size: medium;
+    width: 10%;
+    align-self: end;
+    justify-self: flex-end;
+}
+button:hover {
+    animation-name: pulse;
+    animation-duration: 0.5s;
+    animation-fill-mode: backwards;
+    animation-direction: alternate;
+    animation-timing-function: ease-out;
+    animation-play-state: running;
+    animation-iteration-count: initial;
+}
+select{
+    border: #6B705C 1px solid ;
+    border-radius: 1vh;
+    background-color: #bd9a80;
+    width: available;
+    block-size: inherit;
+    justify-self: right;
+}
+select option {
+    border-top-right-radius: 1px;
+    border-top-left-radius: 1px;
+    border: #6B705C 1vh solid ;
+
+}
+select::selection {
+    color: transparent;
+    background: transparent;
+}
+option::selection{
+    color: transparent;
+    background: transparent;
 }
