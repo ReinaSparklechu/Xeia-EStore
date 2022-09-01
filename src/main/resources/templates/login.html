@@ -5,17 +5,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/storeStyle.css}" type = "text/css">
+    <link rel="stylesheet" th:href= "@{/userDetails.css}" type = "text/css">
 </head>
 <body>
 
-<form th:object="${customer}" method="post" th:action="@{/login}" >
+<form th:object="${customer}" method="post" th:action="@{/login}" class = "userDetails" >
 <p th:if="${formError.equals(true)}" class="error">The Password or username you entered was incorrect</p>
 
 
 
     <label for="username">Username: </label>
     <input type="text" th:field="*{username}">
+    <br>
     <label for="password">Password: </label>
     <input type="password" th:field ="*{password}">
     <button type="submit">Log in</button>

@@ -5,29 +5,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign up page</title>
-    <link rel="stylesheet" th:href="@{/storeStyle.css}" type = "text/css">
+    <link rel="stylesheet" th:href="@{/userDetails.css}" type = "text/css">
 </head>
 <body>
-<form th:object="${registrationForm}" method="post" th:action="@{/signup}">
-    <div class = "loginForm">
+<form th:object="${registrationForm}" method="post" th:action="@{/signup}" class = "userDetails">
         <div th:if = "${#fields.hasErrors()}" class = "error">
             Please correct the errors!
         </div>
+
         <div th:if = "${#fields.hasErrors('global')}" th:text="${#fields.allErrors('global')}"></div>
 
         <label for="username">User Name: </label>
         <input type="text" th:field="*{username}">
+    <br>
         <div th:if ="${#fields.hasErrors('username')}" th:errors="*{username}" class="error">Username err</div>
 
         <label for="Password">Password: </label>
         <input type="password" th:field = "*{password}">
+    <br>
         <div th:if ="${#fields.hasErrors('password')}" th:errors="*{password}" class="error">passwordErr</div>
 
         <div th:if = "*{nameAlreadyExists}"  class="error">The username you choose has already been taken</div>
 
 
         <button type="submit">Signup!</button>
-    </div>
 </form>
 </body>
 </html>
