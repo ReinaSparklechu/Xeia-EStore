@@ -7,8 +7,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 class XeiaStoreApplicationTests {
-	@Autowired
-	MockMvc mvc;
 
 	@Test
 	void contextLoads() {

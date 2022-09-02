@@ -6,6 +6,7 @@ import Xeia.Items.Equipment;
 import Xeia.Items.Item;
 import Xeia.Services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -70,19 +71,8 @@ public class StoreController {
         //put items from cart into inventory
         Map<Item, Integer> cartBuffer = customer.getShoppingCart();
         Map<Item, Integer> invBuffer = customer.getInventory();
-        AtomicInteger totalCost = new AtomicInteger();
-        //iterate through cart
-        cartBuffer.forEach((cartItem, cartQuantity) -> {
-            //add to cost
-            totalCost.set(cartItem.getPrice() * cartQuantity.intValue() + totalCost.get());
-        });
-        if(customer.getFunds()< totalCost.intValue()) {
-            return "redirect:/store";
-        }
         customerService.checkoutCart(customer);
         //deduct funds and update cust object
-        int cost = totalCost.get();
-        customer.setFunds(customer.getFunds() - cost);
 
         //update db
         customerService.updateCustomer(customer);

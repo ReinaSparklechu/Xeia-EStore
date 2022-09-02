@@ -84,3 +84,6 @@ button:hover {
     width: available;
     flex-wrap: wrap;
 }
+a {
+    background: inherit;
+}

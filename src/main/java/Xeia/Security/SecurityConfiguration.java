@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
@@ -64,9 +66,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/admin/**","/admin").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST).hasAuthority("USER")
                 .antMatchers("/login/**", "/**", "/h2-console/**","/store/**").permitAll()
                 .and()
-                .formLogin().loginPage("/login").loginProcessingUrl("/login").defaultSuccessUrl("/store").permitAll().successHandler(new AuthenticationSuccessHandler() {
+                .formLogin().loginPage("/login").loginProcessingUrl("/login").defaultSuccessUrl("/store",true).permitAll().successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
                         request.getSession().setAttribute("custName", authentication.getName());

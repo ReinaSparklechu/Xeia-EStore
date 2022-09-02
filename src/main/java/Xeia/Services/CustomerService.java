@@ -34,39 +34,23 @@ public class CustomerService {
     public void checkoutCart(Customer c) {
         Map<Item, Integer> cartBuffer = c.getShoppingCart();
         Map<Item, Integer> invBuffer = c.getInventory();
-        List<Item> cartItems = cartBuffer.keySet().stream().toList();
-        System.out.println("Inv buffer: " +invBuffer);
-        System.out.println("Cart buffer: " + cartBuffer);
-        System.out.println("starting processing");
-        boolean test = invBuffer.containsKey(cartItems.get(0));
-        for(Map.Entry<Item, Integer> pair: cartBuffer.entrySet()) {
-            if(invBuffer.keySet().stream().toList().contains(pair.getKey())) {
-
-                //use invbuffer for each workaround
-                for(Map.Entry<Item, Integer> invPair: invBuffer.entrySet()) {
-                    if(invPair.getKey().equals(pair.getKey())) {
-                        invBuffer.replace(invPair.getKey(),invPair.getValue() + pair.getValue());
-                    }
-                }
+        int totalCost = 0;
+        for (Map.Entry<Item, Integer> e: cartBuffer.entrySet()) {
+            int storeQty = itemRepo.getEntryQuantityById(e.getKey().getOwner(), e.getKey());
+            Logger.getGlobal().info("Current item store qty is " + storeQty);
+            int cartQty = e.getValue();
+            if(storeQty >= cartQty) {
+                Logger.getLogger("global").info("Selling " + cartBuffer + " of " + e.getKey().getName());
+                invBuffer.put(e.getKey(), invBuffer.getOrDefault(e.getKey(),0) + e.getValue());
+                totalCost += e.getKey().getPrice() *e.getValue();
+                Logger.getGlobal().info("Updating itemRepo values");
+                itemRepo.updateEntryForId(e.getKey().getOwner(), e.getKey(), storeQty-cartQty);
+                Logger.getGlobal().info("New entry quantity for: " + e.getKey().getName() + " is now " + itemRepo.getEntryQuantityById(e.getKey().getOwner(),e.getKey()));
             } else {
-                invBuffer.put(pair.getKey(), pair.getValue());
+                Logger.getLogger("global").warning("Customer had more copies of items in cart than allowed sale not made for item: " + e.getKey());
             }
-            String owner = pair.getKey().getOwner();
-
-            //query the whole mapping from item owner
-            int ownerQuantity = itemRepo.getEntryQuantityById(owner, pair.getKey());
-            int cartQuantity = cartBuffer.get(pair.getKey());
-            Logger.getLogger("Global").log(Level.FINE, "Owner q is " + ownerQuantity + " and cart Q is " + cartQuantity);
-            //find the current quantity
-
-            //subtract using pair.getvalue
-
-            //update item owner
-            itemRepo.updateEntryForId(pair.getKey().getOwner(), pair.getKey(), ownerQuantity - cartQuantity);
         }
-        System.out.println("Inv buffer: " +invBuffer);
-        System.out.println("Cart buffer: " + cartBuffer);
-        // before clearing, get each item's entry in from the db using item.owner, update quantity of items
+        c.setFunds(c.getFunds() - totalCost);
         cartBuffer.clear();
         c.setInventory(invBuffer);
         c.setShoppingCart(cartBuffer);

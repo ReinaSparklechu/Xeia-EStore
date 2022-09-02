@@ -36,6 +36,8 @@ public class JdbcCustomerRepository implements CustomerRepository {
     private JdbcTemplate jdbc;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    ItemRepository itemRepo;
 
     @Autowired
     public JdbcCustomerRepository(JdbcTemplate jdbc) throws IOException, ExecutionException, InterruptedException {
@@ -77,7 +79,6 @@ public class JdbcCustomerRepository implements CustomerRepository {
         }
         throw new UsernameNotFoundException("User :" + username + " not found");
     }
-    //todo: implement
     @Override
     public Map<Item, Integer> getCustomerInventoryById(long custId) {
         List<Map.Entry<Item, Integer>> inventory = new ArrayList<>();
@@ -154,11 +155,23 @@ public class JdbcCustomerRepository implements CustomerRepository {
 
         PreparedStatementCreatorFactory pscf = new PreparedStatementCreatorFactory("insert into Customer_Cart(userId, Item_name, Quantity) values ( ?,?,? )", Types.BIGINT, Types.VARCHAR, Types.INTEGER);
         List<String> dbCart = jdbc.query("select item_name from Customer_Cart where userId = " +customer.getUserId(),this::mapInv);
+
         //process shopping cart and update db
         customer.getShoppingCart().forEach(((item, integer) -> {
-            PreparedStatementCreator psc = pscf.newPreparedStatementCreator(Arrays.asList(customer.getUserId(),item.getName(),integer.intValue()));
-            jdbc.update(psc);
-            dbCart.remove(item);
+            int currentQty = itemRepo.getEntryQuantityById(item.getOwner(), item);
+            if(integer<= currentQty) {
+                PreparedStatementCreator psc = pscf.newPreparedStatementCreator(Arrays.asList(customer.getUserId(),item.getName(),integer.intValue()));
+                jdbc.update(psc);
+                Logger.getGlobal().info("Added " + item.getName() + " to DB");
+            } else {
+                Logger.getGlobal().warning("Store does not have " +integer + " number of " + item.getName());
+                customer.getShoppingCart().put(item, currentQty);
+                Logger.getGlobal().warning("setting the cart qty to max allowed value");
+            }
+            if(dbCart.contains(item.getName())) {
+                dbCart.remove(item.getName());
+            }
+
         }));
         if(!dbCart.isEmpty()) {
             for (String itemName: dbCart) {
